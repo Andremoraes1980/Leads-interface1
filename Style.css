@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 20px;
+}
+#app {
+  max-width: 1200px;
+  margin: auto;
+}
+.coluna {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.card {
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background: #f9f9f9;
+}

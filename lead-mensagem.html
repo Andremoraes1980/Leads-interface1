@@ -84,24 +84,125 @@ select {
   </div>
 </body>
 </html>
-<div class="chat-container">
-  <div class="chat-header">
-    <h3>Conversa com João Silva</h3>
-  </div>
-
-  <div class="chat-history" id="chat-history">
-    <div class="message received">
-      <p>Olá, tenho interesse no carro.</p>
-      <span class="timestamp">10:03</span>
+<div class="message-panel">
+  <div class="message-header">
+    <h2>Histórico de Conversa - João Silva</h2>
+  </div>  <div class="message-history" id="chat-history">
+    <div class="msg msg-received">
+      <p>Oi! Tenho interesse no carro.</p>
+      <span class="msg-time">10:01</span>
     </div>
-    <div class="message sent">
-      <p>Olá João! Tudo bem? Esse modelo ainda está disponível.</p>
-      <span class="timestamp">10:05</span>
+    <div class="msg msg-sent">
+      <p>Bom dia, João! Sim, ainda está disponível.</p>
+      <span class="msg-time">10:02</span>
     </div>
-  </div>
-
-  <div class="chat-input">
+  </div>  <div class="message-input">
     <input type="text" id="msg-input" placeholder="Digite sua mensagem...">
     <button onclick="enviarMensagem()">Enviar</button>
   </div>
-</div>
+</div><style>
+.message-panel {
+  max-width: 700px;
+  margin: 40px auto;
+  border-radius: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.message-header {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.message-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.message-history {
+  padding: 20px;
+  height: 350px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fefefe;
+}
+
+.msg {
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.msg-received {
+  background-color: #e3f2fd;
+  align-self: flex-start;
+}
+
+.msg-sent {
+  background-color: #d0f0c0;
+  align-self: flex-end;
+}
+
+.msg-time {
+  display: block;
+  font-size: 11px;
+  color: #777;
+  margin-top: 6px;
+  text-align: right;
+}
+
+.message-input {
+  display: flex;
+  padding: 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #ddd;
+  gap: 10px;
+}
+
+.message-input input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.message-input button {
+  padding: 10px 18px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+</style><script>
+function enviarMensagem() {
+  const input = document.getElementById("msg-input");
+  const mensagem = input.value.trim();
+  if (!mensagem) return;
+
+  const historico = document.getElementById("chat-history");
+  const novaMsg = document.createElement("div");
+  novaMsg.className = "msg msg-sent";
+  novaMsg.innerHTML = `
+    <p>${mensagem}</p>
+    <span class="msg-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
+  `;
+
+  historico.appendChild(novaMsg);
+  input.value = "";
+  historico.scrollTop = historico.scrollHeight;
+}
+</script>

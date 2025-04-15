@@ -1,18 +1,104 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard de Leads</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM de Leads</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
+    }
+    header {
+      background-color: #1a73e8;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .container {
+      display: flex;
+      overflow-x: auto;
+      height: 90vh;
+      padding: 1rem;
+    }
+    .column {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-right: 1rem;
+      min-width: 280px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .column h2 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .lead {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+      cursor: grab;
+    }
+    .lead .info {
+      margin-bottom: 0.5rem;
+    }
+    .lead .vendedor {
+      font-size: 0.8rem;
+      color: #444;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .lead .classificacao {
+      display: inline-block;
+      padding: 0.3rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      color: white;
+    }
+    .quente {
+      background-color: green;
+    }
+    .morno {
+      background-color: orange;
+    }
+    .frio {
+      background-color: blue;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <h1>Dashboard de Leads</h1>
-    <div class="coluna">
+  <header>Interface de Leads</header>
+  <div class="container">
+    <div class="column">
       <h2>Novos</h2>
-      <div class="card">Exemplo Lead</div>
+      <div class="lead">
+        <div class="info">João Silva - (11) 99999-9999 <a href="#">WhatsApp</a></div>
+        <div class="info">HB20 2019</div>
+        <div class="vendedor" onclick="transferir('João Silva')">Vendedor: Marcos</div>
+        <div class="classificacao quente">Quente</div>
+      </div>
     </div>
-  </div>
-</body>
+    <div class="column">
+      <h2>Não Respondidos</h2>
+    </div>
+    <div class="column">
+      <h2>Sem Contato</h2>
+    </div>
+    <div class="column">
+      <h2>Negociação</h2>
+    </div>
+    <div class="column">
+      <h2>Visita Agendada</h2>
+    </div>
+  </div>  <script>
+    function transferir(nome) {
+      alert("Transferir lead de: " + nome);
+    }
+  </script></body>
 </html>

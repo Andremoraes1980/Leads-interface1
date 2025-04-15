@@ -1,97 +1,96 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cartão de Lead</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM de Leads</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 2rem;
-    }.lead-card {
-  display: flex;
-  justify-content: space-between;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.lead-left {
-  width: 60%;
-}
-
-.lead-right {
-  width: 35%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.lead-right img {
-  width: 100%;
-  max-width: 200px;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
-
-.lead-info h3 {
-  margin: 0;
-}
-
-.lead-info p {
-  margin: 4px 0;
-}
-
-.lead-status {
-  margin-top: 1rem;
-}
-
-.select-group {
-  margin-bottom: 0.5rem;
-}
-
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .lead-card {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      background-color: #fff;
+      margin: 10px 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .lead-info {
+      flex: 1;
+      padding-right: 10px;
+    }
+    .lead-info strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+    .lead-car {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lead-car img {
+      width: 100px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .card-bottom select {
+      padding: 5px;
+    }
   </style>
 </head>
 <body>
-  <div class="lead-card">
-    <div class="lead-left">
+  <h1>Leads</h1>  <div class="lead-card">
+    <div class="card-top">
       <div class="lead-info">
-        <h3>João da Silva</h3>
-        <p>Telefone: (11) 99999-9999</p>
-        <p>Carro: Onix 1.0 Turbo</p>
-        <p>Vendedor: Ana Souza</p>
+        <strong>Nome:</strong> João Silva<br>
+        <strong>Telefone:</strong> (11) 91234-5678 <a href="#">WhatsApp</a><br>
+        <strong>Nome do vendedor:</strong> Ana Souza
       </div>
-      <div class="lead-status">
-        <div class="select-group">
-          <label for="status">Status:</label>
-          <select id="status">
-            <option>Novos</option>
-            <option>Não respondidos</option>
-            <option>Sem contato</option>
-            <option>Negociação</option>
-            <option>Visita agendada</option>
-            <option>Vendidos</option>
-            <option>Não vendidos</option>
-          </select>
-        </div>
-        <div class="select-group">
-          <label for="temperatura">Temperatura:</label>
-          <select id="temperatura">
-            <option style="color: green;">Quente</option>
-            <option style="color: orange;">Morno</option>
-            <option style="color: blue;">Frio</option>
-          </select>
+      <div class="lead-car">
+        <img src="https://via.placeholder.com/100x70" alt="Foto do carro">
+        <div>
+          <strong>Carro:</strong> Fiat Argo 2021<br>
+          <strong>KM:</strong> 35.000 km<br>
+          <a href="#">Ver anúncio</a>
         </div>
       </div>
     </div>
-    <div class="lead-right">
-      <img src="https://via.placeholder.com/200x120?text=Foto+do+Carro" alt="Foto do carro">
-      <a href="#" target="_blank">Ver anúncio: Onix 1.0 Turbo 2022 - 25.000 km</a>
-    </div>
-  </div>
-</body>
+    <div class="card-bottom">
+      <label>
+        Status:
+        <select>
+          <option>Novos</option>
+          <option>Não Respondido</option>
+          <option>Sem Contato</option>
+          <option>Negociação</option>
+          <option>Visita Agendada</option>
+        </select>
+      </label><label>
+    Temperatura:
+    <select>
+      <option style="color: green">Quente</option>
+      <option style="color: orange">Morno</option>
+      <option style="color: blue">Frio</option>
+    </select>
+  </label>
+</div>
+
+  </div></body>
 </html>

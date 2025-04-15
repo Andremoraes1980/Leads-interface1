@@ -101,38 +101,5 @@
       alert("Transferir lead de: " + nome);
     }
   </script></body>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script>
-  // Inicializa o Supabase
-  const supabase = supabase.createClient(
-    'https://dpanpvimjgybiyjnuyzi.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwYW5wdmltamd5Yml5am51eXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2ODYxMzUsImV4cCI6MjA2MDI2MjEzNX0.r0YdAO3ZNiM1uzHIatTnAHwvaDbGV1EhIt8Vffo4-38
-'
-  );
-
-  // Função para transferir o lead
-  function transferir(nome) {
-    alert("Transferir lead de: " + nome);
-  }
-
-  // Exemplo: Carregar leads do Supabase (aprimoraremos depois)
-  async function carregarLeads() {
-    const { data, error } = await supabase
-      .from('leads')
-      .select('*');
-
-    if (error) {
-      console.error('Erro ao carregar leads:', error);
-      return;
-    }
-
-    console.log('Leads:', data);
-    // Aqui você pode montar os cards com os dados carregados
-  }
-
-  // Chamada automática ao abrir a página
-  carregarLeads();
-</script>
-</body>
 </html>
 

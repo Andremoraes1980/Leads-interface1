@@ -1,90 +1,97 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visual Lead Card</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cartão de Lead</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f1f1f1;
-      padding: 20px;
-    }
-    .lead-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: stretch;
-      border: 2px solid #ccc;
-      border-radius: 10px;
-      background-color: white;
-      padding: 15px;
-      margin-bottom: 20px;
-      max-width: 800px;
-    }
-    .lead-info {
-      flex: 1;
-      padding-right: 15px;
-    }
-    .lead-info h3 {
-      margin: 5px 0;
-    }
-    .lead-info .field {
-      margin: 6px 0;
-    }
-    .lead-info select {
-      margin-left: 10px;
-    }
-    .car-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 240px;
-    }
-    .car-info img {
-      width: 220px;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-    .temperature {
-      font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 8px;
-      display: inline-block;
-      color: white;
-    }
-    .quente { background-color: green; }
-    .morno { background-color: orange; }
-    .frio { background-color: blue; }
+      background-color: #f5f5f5;
+      margin: 2rem;
+    }.lead-card {
+  display: flex;
+  justify-content: space-between;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.lead-left {
+  width: 60%;
+}
+
+.lead-right {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lead-right img {
+  width: 100%;
+  max-width: 200px;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.lead-info h3 {
+  margin: 0;
+}
+
+.lead-info p {
+  margin: 4px 0;
+}
+
+.lead-status {
+  margin-top: 1rem;
+}
+
+.select-group {
+  margin-bottom: 0.5rem;
+}
+
   </style>
 </head>
-<body>  <div class="lead-card">
-    <div class="lead-info">
-      <h3>André Moraes <a href="https://wa.me/5599999999999" target="_blank">(WhatsApp)</a></h3>
-      <div class="field">Telefone: (99) 99999-9999</div>
-      <div class="field">Vendedor: João Silva</div>
-      <div class="field">
-        Status:
-        <select>
-          <option>Novos</option>
-          <option>Não Respondidos</option>
-          <option>Sem Contato</option>
-          <option>Negociação</option>
-          <option>Visita Agendada</option>
-        </select>
+<body>
+  <div class="lead-card">
+    <div class="lead-left">
+      <div class="lead-info">
+        <h3>João da Silva</h3>
+        <p>Telefone: (11) 99999-9999</p>
+        <p>Carro: Onix 1.0 Turbo</p>
+        <p>Vendedor: Ana Souza</p>
       </div>
-      <div class="field">
-        Temperatura:
-        <select onchange="this.className=this.options[this.selectedIndex].className">
-          <option class="quente" selected>Quente</option>
-          <option class="morno">Morno</option>
-          <option class="frio">Frio</option>
-        </select>
+      <div class="lead-status">
+        <div class="select-group">
+          <label for="status">Status:</label>
+          <select id="status">
+            <option>Novos</option>
+            <option>Não respondidos</option>
+            <option>Sem contato</option>
+            <option>Negociação</option>
+            <option>Visita agendada</option>
+            <option>Vendidos</option>
+            <option>Não vendidos</option>
+          </select>
+        </div>
+        <div class="select-group">
+          <label for="temperatura">Temperatura:</label>
+          <select id="temperatura">
+            <option style="color: green;">Quente</option>
+            <option style="color: orange;">Morno</option>
+            <option style="color: blue;">Frio</option>
+          </select>
+        </div>
       </div>
-    </div><div class="car-info">
-  <img src="https://via.placeholder.com/220x140.png?text=Carro" alt="Imagem do carro">
-  <a href="#" target="_blank">Onix LT 1.0 - 2021 - 45.000km</a>
-</div>
-
-  </div></body>
+    </div>
+    <div class="lead-right">
+      <img src="https://via.placeholder.com/200x120?text=Foto+do+Carro" alt="Foto do carro">
+      <a href="#" target="_blank">Ver anúncio: Onix 1.0 Turbo 2022 - 25.000 km</a>
+    </div>
+  </div>
+</body>
 </html>

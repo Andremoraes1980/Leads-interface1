@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRM de Leads</title>
   <style>
     body {
@@ -44,7 +44,7 @@
     .container {
       display: flex;
       overflow-x: auto;
-      height: 80vh;
+      height: 70vh;
       padding: 1rem;
     }
     .column {
@@ -66,7 +66,6 @@
       padding: 1rem;
       margin-bottom: 1rem;
       box-shadow: 0 0 3px rgba(0,0,0,0.1);
-      cursor: grab;
     }
     .lead .info {
       margin-bottom: 0.5rem;
@@ -75,7 +74,6 @@
       font-size: 0.8rem;
       color: #444;
       text-decoration: underline;
-      cursor: pointer;
     }
     .lead .classificacao {
       display: inline-block;
@@ -93,49 +91,94 @@
 <body>
   <header>Interface de Leads</header>
 
+  <div class="form-container">
+    <input type="text" id="nome" placeholder="Nome" required />
+    <input type="text" id="telefone" placeholder="Telefone" required />
+    <input type="text" id="carro" placeholder="Carro de Interesse" required />
+    <input type="text" id="vendedor" placeholder="Vendedor" required />
+    <select id="classificacao" required>
+      <option value="">Classificação</option>
+      <option value="quente">Quente</option>
+      <option value="morno">Morno</option>
+      <option value="frio">Frio</option>
+    </select>
+    <button onclick="enviarLead()">Enviar Lead</button>
+  </div>
+
   <div class="container">
-    <div class="column">
+    <div class="column" id="Novos">
       <h2>Novos</h2>
-      <div id="coluna-novos"></div>
     </div>
-    <div class="column">
+    <div class="column" id="Não Respondidos">
       <h2>Não Respondidos</h2>
     </div>
-    <div class="column">
+    <div class="column" id="Sem Contato">
       <h2>Sem Contato</h2>
     </div>
-    <div class="column">
+    <div class="column" id="Negociação">
       <h2>Negociação</h2>
     </div>
-    <div class="column">
+    <div class="column" id="Visita Agendada">
       <h2>Visita Agendada</h2>
     </div>
   </div>
 
   <script>
-    async function carregarLeads() {
-      const resposta = await fetch("https://loja-lead2.onrender.com/leads");
-      const leads = await resposta.json();
-      const colunaNovos = document.getElementById("coluna-novos");
+    const apiUrl = "https://loja-lead2.onrender.com/leads";
 
-      leads.forEach(lead => {
-        const div = document.createElement("div");
-        div.className = "lead";
-        div.innerHTML = `
-          <div class="info">${lead.nome} - ${lead.telefone} <a href="#">WhatsApp</a></div>
-          <div class="info">${lead.carro}</div>
-          <div class="vendedor" onclick="transferir('${lead.nome}')">Vendedor: ${lead.vendedor}</div>
-          <div class="classificacao ${lead.classificacao}">${lead.classificacao.charAt(0).toUpperCase() + lead.classificacao.slice(1)}</div>
-        `;
-        colunaNovos.appendChild(div);
+    function criarCard(lead) {
+      const div = document.createElement("div");
+      div.className = "lead";
+      div.innerHTML = `
+        <div class="info">${lead.nome} - ${lead.telefone}</div>
+        <div class="info">${lead.carro}</div>
+        <div class="vendedor">Vendedor: ${lead.vendedor}</div>
+        <div class="classificacao ${lead.classificacao.toLowerCase()}">${lead.classificacao}</div>
+      `;
+      return div;
+    }
+
+    function carregarLeads() {
+      fetch(apiUrl)
+        .then(res => res.json())
+        .then(leads => {
+          // Limpa as colunas
+          document.querySelectorAll(".column").forEach(col => {
+            col.querySelectorAll(".lead").forEach(lead => lead.remove());
+          });
+
+          leads.forEach(lead => {
+            const col = document.getElementById(lead.status || "Novos");
+            if (col) {
+              const card = criarCard(lead);
+              col.appendChild(card);
+            }
+          });
+        });
+    }
+
+    function enviarLead() {
+      const lead = {
+        nome: document.getElementById("nome").value,
+        telefone: document.getElementById("telefone").value,
+        carro: document.getElementById("carro").value,
+        vendedor: document.getElementById("vendedor").value,
+        classificacao: document.getElementById("classificacao").value,
+        status: "Novos"
+      };
+
+      fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lead)
+      })
+      .then(() => {
+        alert("Lead enviado com sucesso!");
+        carregarLeads();
       });
     }
 
-    function transferir(nome) {
-      alert("Transferir lead de: " + nome);
-    }
-
-    window.onload = carregarLeads;
+    carregarLeads();
   </script>
 </body>
 </html>

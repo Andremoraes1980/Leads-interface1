@@ -1,7 +1,8 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CRM de Leads</title>
   <style>
     body {
@@ -43,7 +44,7 @@
     .container {
       display: flex;
       overflow-x: auto;
-      height: 80vh;
+      height: 70vh;
       padding: 1rem;
     }
     .column {
@@ -85,4 +86,73 @@
       color: white;
     }
     .quente { background-color: green; }
-    .morno { background-color
+    .morno { background-color: orange; }
+    .frio { background-color: blue; }
+  </style>
+</head>
+<body>
+  <header>Interface de Leads</header>
+
+  <div class="form-container">
+    <form id="leadForm">
+      <input type="text" id="nome" placeholder="Nome do cliente" required />
+      <input type="text" id="telefone" placeholder="Telefone" required />
+      <input type="text" id="carro" placeholder="Carro de interesse" required />
+      <input type="text" id="vendedor" placeholder="Vendedor responsável" required />
+      <select id="classificacao" required>
+        <option value="">Classificação</option>
+        <option value="quente">Quente</option>
+        <option value="morno">Morno</option>
+        <option value="frio">Frio</option>
+      </select>
+      <button type="submit">Cadastrar Lead</button>
+    </form>
+    <div id="mensagem"></div>
+  </div>
+
+  <div class="container">
+    <div class="column">
+      <h2>Novos</h2>
+      <!-- Aqui entrarão os leads -->
+    </div>
+    <div class="column">
+      <h2>Não Respondidos</h2>
+    </div>
+    <div class="column">
+      <h2>Sem Contato</h2>
+    </div>
+    <div class="column">
+      <h2>Negociação</h2>
+    </div>
+    <div class="column">
+      <h2>Visita Agendada</h2>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("leadForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const lead = {
+        nome: document.getElementById("nome").value,
+        telefone: document.getElementById("telefone").value,
+        carro: document.getElementById("carro").value,
+        vendedor: document.getElementById("vendedor").value,
+        classificacao: document.getElementById("classificacao").value,
+      };
+
+      const response = await fetch("https://loja-lead2.onrender.com/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lead),
+      });
+
+      const result = await response.json();
+      document.getElementById("mensagem").innerText = result.mensagem || "Erro ao enviar lead.";
+
+      // limpar formulário
+      document.getElementById("leadForm").reset();
+    });
+  </script>
+</body>
+</html>

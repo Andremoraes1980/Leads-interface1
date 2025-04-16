@@ -17,10 +17,33 @@
       text-align: center;
       font-size: 1.5rem;
     }
+    .form-container {
+      padding: 1rem;
+      background: #ffffff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      margin: 1rem;
+      border-radius: 8px;
+    }
+    .form-container input, .form-container select {
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .form-container button {
+      padding: 0.6rem;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
     .container {
       display: flex;
       overflow-x: auto;
-      height: 90vh;
+      height: 80vh;
       padding: 1rem;
     }
     .column {
@@ -61,45 +84,5 @@
       font-weight: bold;
       color: white;
     }
-    .quente {
-      background-color: green;
-    }
-    .morno {
-      background-color: orange;
-    }
-    .frio {
-      background-color: blue;
-    }
-  </style>
-</head>
-<body>
-  <header>Interface de Leads</header>
-  <div class="container">
-    <div class="column">
-      <h2>Novos</h2>
-      <div class="lead">
-        <div class="info">João Silva - (11) 99999-9999 <a href="#">WhatsApp</a></div>
-        <div class="info">HB20 2019</div>
-        <div class="vendedor" onclick="transferir('João Silva')">Vendedor: Marcos</div>
-        <div class="classificacao quente">Quente</div>
-      </div>
-    </div>
-    <div class="column">
-      <h2>Não Respondidos</h2>
-    </div>
-    <div class="column">
-      <h2>Sem Contato</h2>
-    </div>
-    <div class="column">
-      <h2>Negociação</h2>
-    </div>
-    <div class="column">
-      <h2>Visita Agendada</h2>
-    </div>
-  </div>  <script>
-    function transferir(nome) {
-      alert("Transferir lead de: " + nome);
-    }
-  </script></body>
-</html>
-
+    .quente { background-color: green; }
+    .morno { background-color

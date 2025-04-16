@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRM de Leads</title>
   <style>
     body {
@@ -93,13 +93,14 @@
 <body>
   <header>Interface de Leads</header>
 
+  <!-- Formulário de Inserção -->
   <div class="form-container">
-    <form id="leadForm">
-      <input type="text" name="nome" placeholder="Nome" required />
-      <input type="text" name="telefone" placeholder="Telefone" required />
-      <input type="text" name="carro" placeholder="Carro de Interesse" required />
-      <input type="text" name="vendedor" placeholder="Vendedor" required />
-      <select name="classificacao" required>
+    <form id="form-lead">
+      <input type="text" id="nome" placeholder="Nome do cliente" required />
+      <input type="text" id="telefone" placeholder="Telefone" required />
+      <input type="text" id="carro" placeholder="Carro de interesse" required />
+      <input type="text" id="vendedor" placeholder="Vendedor responsável" required />
+      <select id="classificacao" required>
         <option value="">Classificação</option>
         <option value="quente">Quente</option>
         <option value="morno">Morno</option>
@@ -109,53 +110,64 @@
     </form>
   </div>
 
+  <!-- Colunas de Leads -->
   <div class="container">
-    <div class="column" id="novos">
+    <div class="column">
       <h2>Novos</h2>
+      <div id="leads-container"></div>
     </div>
-    <div class="column" id="naoRespondidos">
+    <div class="column">
       <h2>Não Respondidos</h2>
     </div>
-    <div class="column" id="semContato">
+    <div class="column">
       <h2>Sem Contato</h2>
+    </div>
+    <div class="column">
+      <h2>Negociação</h2>
+    </div>
+    <div class="column">
+      <h2>Visita Agendada</h2>
     </div>
   </div>
 
   <script>
-    const apiUrl = "https://loja-lead2.onrender.com";
-
-    document.getElementById("leadForm").addEventListener("submit", async (e) => {
+    // Enviar Lead
+    document.querySelector("#form-lead").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const formData = new FormData(e.target);
-      const data = {};
-      formData.forEach((value, key) => (data[key] = value));
+
+      const data = {
+        nome: document.querySelector("#nome").value,
+        telefone: document.querySelector("#telefone").value,
+        carro: document.querySelector("#carro").value,
+        vendedor: document.querySelector("#vendedor").value,
+        classificacao: document.querySelector("#classificacao").value
+      };
 
       try {
-        const response = await fetch(`${apiUrl}/leads`, {
+        const resposta = await fetch("https://loja-lead2.onrender.com/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(data)
         });
 
-        if (response.ok) {
-          alert("Lead enviado com sucesso!");
-          e.target.reset();
-          carregarLeads();
-        } else {
-          alert("Erro ao enviar lead.");
-        }
-      } catch (err) {
-        alert("Erro de conexão com o servidor.");
-        console.error(err);
+        const resultado = await resposta.json();
+        alert(resultado.mensagem || "Lead enviado!");
+        document.querySelector("#form-lead").reset();
+        carregarLeads();
+      } catch (erro) {
+        alert("Erro ao conectar com o servidor.");
+        console.error(erro);
       }
     });
 
+    // Carregar Leads na tela
     async function carregarLeads() {
       try {
-        const response = await fetch(`${apiUrl}/leads`);
-        const leads = await response.json();
-        const novos = document.getElementById("novos");
-        novos.innerHTML = "<h2>Novos</h2>";
+        const resposta = await fetch("https://loja-lead2.onrender.com/leads");
+        const leads = await resposta.json();
+
+        const container = document.getElementById("leads-container");
+        container.innerHTML = "";
 
         leads.forEach((lead) => {
           const div = document.createElement("div");
@@ -164,16 +176,17 @@
             <div class="info">${lead.nome} - ${lead.telefone}</div>
             <div class="info">${lead.carro}</div>
             <div class="vendedor">Vendedor: ${lead.vendedor}</div>
-            <div class="classificacao ${lead.classificacao}">${lead.classificacao}</div>
+            <div class="classificacao ${lead.classificacao.toLowerCase()}">${lead.classificacao}</div>
           `;
-          novos.appendChild(div);
+          container.appendChild(div);
         });
-      } catch (err) {
-        console.error("Erro ao carregar leads:", err);
+      } catch (erro) {
+        console.error("Erro ao carregar leads:", erro);
       }
     }
 
-    window.onload = carregarLeads;
+    // Ao carregar a página
+    carregarLeads();
   </script>
 </body>
 </html>

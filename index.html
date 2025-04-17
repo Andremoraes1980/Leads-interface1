@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -91,9 +90,7 @@
   </style>
 </head>
 <body>
-  <header>Interface de Leads</header>
-
-  <div class="form-container">
+  <header>Interface de Leads</header>  <!-- Formulário de Inserção -->  <div class="form-container">
     <form id="form-lead">
       <input type="text" id="nome" placeholder="Nome do cliente" required />
       <input type="text" id="telefone" placeholder="Telefone" required />
@@ -107,20 +104,24 @@
       </select>
       <button type="submit">Enviar Lead</button>
     </form>
-  </div>
-
-  <div class="container">
+  </div>  <!-- Colunas de Leads -->  <div class="container">
     <div class="column">
       <h2>Novos</h2>
       <div id="leads-container"></div>
     </div>
-    <div class="column"><h2>Não Respondidos</h2></div>
-    <div class="column"><h2>Sem Contato</h2></div>
-    <div class="column"><h2>Negociação</h2></div>
-    <div class="column"><h2>Visita Agendada</h2></div>
-  </div>
-
-  <script>
+    <div class="column">
+      <h2>Não Respondidos</h2>
+    </div>
+    <div class="column">
+      <h2>Sem Contato</h2>
+    </div>
+    <div class="column">
+      <h2>Negociação</h2>
+    </div>
+    <div class="column">
+      <h2>Visita Agendada</h2>
+    </div>
+  </div>  <script>
     // Enviar Lead
     document.querySelector("#form-lead").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -150,13 +151,13 @@
       }
     });
 
-    // Carregar Leads
+    // Carregar Leads na tela
     async function carregarLeads() {
       try {
         const resposta = await fetch("https://loja-lead2.onrender.com/leads");
         const json = await resposta.json();
 
-        const leads = Array.isArray(json) ? json : (json.data || []);
+        const leads = Array.isArray(json) ? json : json.leads;
         console.log("Leads carregados:", leads);
 
         const container = document.getElementById("leads-container");
@@ -178,8 +179,7 @@
       }
     }
 
-    // Inicia carregamento
+    // Ao carregar a página
     carregarLeads();
-  </script>
-</body>
+  </script></body>
 </html>

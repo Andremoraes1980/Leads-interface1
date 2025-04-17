@@ -144,7 +144,7 @@
       };
 
       try {
-        const resposta = await fetch("https://loja-lead2.onrender.com/api/leads", {
+        const resposta = await fetch("https://loja-lead2.onrender.com/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -163,8 +163,10 @@
     // Carregar Leads na tela
     async function carregarLeads() {
       try {
-        const resposta = await fetch("https://loja-lead2.onrender.com/api/leads");
-        const leads = await resposta.json();
+        const resposta = await fetch("https://loja-lead2.onrender.com/leads");
+        const json = await resposta.json();
+
+        const leads = Array.isArray(json) ? json : json.leads;
 
         const container = document.getElementById("leads-container");
         container.innerHTML = "";

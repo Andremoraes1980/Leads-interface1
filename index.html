@@ -93,7 +93,6 @@
 <body>
   <header>Interface de Leads</header>
 
-  <!-- Formulário de Inserção -->
   <div class="form-container">
     <form id="form-lead">
       <input type="text" id="nome" placeholder="Nome do cliente" required />
@@ -110,24 +109,15 @@
     </form>
   </div>
 
-  <!-- Colunas de Leads -->
   <div class="container">
     <div class="column">
       <h2>Novos</h2>
       <div id="leads-container"></div>
     </div>
-    <div class="column">
-      <h2>Não Respondidos</h2>
-    </div>
-    <div class="column">
-      <h2>Sem Contato</h2>
-    </div>
-    <div class="column">
-      <h2>Negociação</h2>
-    </div>
-    <div class="column">
-      <h2>Visita Agendada</h2>
-    </div>
+    <div class="column"><h2>Não Respondidos</h2></div>
+    <div class="column"><h2>Sem Contato</h2></div>
+    <div class="column"><h2>Negociação</h2></div>
+    <div class="column"><h2>Visita Agendada</h2></div>
   </div>
 
   <script>
@@ -160,13 +150,13 @@
       }
     });
 
-    // Carregar Leads na tela
+    // Carregar Leads
     async function carregarLeads() {
       try {
         const resposta = await fetch("https://loja-lead2.onrender.com/leads");
         const json = await resposta.json();
 
-        const leads = Array.isArray(json) ? json : json.leads;
+        const leads = Array.isArray(json) ? json : (json.data || []);
         console.log("Leads carregados:", leads);
 
         const container = document.getElementById("leads-container");
@@ -175,12 +165,11 @@
         leads.forEach((lead) => {
           const div = document.createElement("div");
           div.className = "lead";
-          const classificacao = lead.classificacao ? lead.classificacao.toLowerCase() : "frio";
           div.innerHTML = `
             <div class="info">${lead.nome} - ${lead.telefone}</div>
             <div class="info">${lead.carro}</div>
             <div class="vendedor">Vendedor: ${lead.vendedor}</div>
-            <div class="classificacao ${classificacao}">${lead.classificacao}</div>
+            <div class="classificacao ${lead.classificacao.toLowerCase()}">${lead.classificacao}</div>
           `;
           container.appendChild(div);
         });
@@ -189,7 +178,7 @@
       }
     }
 
-    // Ao carregar a página
+    // Inicia carregamento
     carregarLeads();
   </script>
 </body>

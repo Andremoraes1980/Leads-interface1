@@ -93,7 +93,6 @@
 <body>
   <header>Interface de Leads</header>
 
-  <!-- Formulário de Inserção -->
   <div class="form-container">
     <form id="form-lead">
       <input type="text" id="nome" placeholder="Nome do cliente" required />
@@ -110,29 +109,19 @@
     </form>
   </div>
 
-  <!-- Colunas de Leads -->
   <div class="container">
     <div class="column">
       <h2>Novos</h2>
       <div id="leads-container"></div>
     </div>
-    <div class="column">
-      <h2>Não Respondidos</h2>
-    </div>
-    <div class="column">
-      <h2>Sem Contato</h2>
-    </div>
-    <div class="column">
-      <h2>Negociação</h2>
-    </div>
-    <div class="column">
-      <h2>Visita Agendada</h2>
-    </div>
+    <div class="column"><h2>Não Respondidos</h2></div>
+    <div class="column"><h2>Sem Contato</h2></div>
+    <div class="column"><h2>Negociação</h2></div>
+    <div class="column"><h2>Visita Agendada</h2></div>
   </div>
 
   <script>
-    const API_URL = 'https://leads-interface1.onrender.com/leads';
-
+    // Enviar Lead
     document.querySelector("#form-lead").addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -145,14 +134,14 @@
       };
 
       try {
-        const resposta = await fetch(API_URL, {
+        const resposta = await fetch("https://loja-lead2.onrender.com/leads", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
 
         const resultado = await resposta.json();
-        alert(resultado.mensagem || "Lead enviado com sucesso!");
+        alert(resultado.mensagem || "Lead enviado!");
         document.querySelector("#form-lead").reset();
         carregarLeads();
       } catch (erro) {
@@ -161,11 +150,14 @@
       }
     });
 
+    // Carregar Leads
     async function carregarLeads() {
       try {
-        const resposta = await fetch(API_URL);
+        const resposta = await fetch("https://loja-lead2.onrender.com/leads");
         const json = await resposta.json();
-        const leads = Array.isArray(json) ? json : json.leads;
+
+        const leads = Array.isArray(json) ? json : (json.data || []);
+        console.log("Leads carregados:", leads);
 
         const container = document.getElementById("leads-container");
         container.innerHTML = "";
@@ -186,6 +178,7 @@
       }
     }
 
+    // Inicia carregamento
     carregarLeads();
   </script>
 </body>

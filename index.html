@@ -175,11 +175,12 @@
         leads.forEach((lead) => {
           const div = document.createElement("div");
           div.className = "lead";
+          const classificacao = lead.classificacao ? lead.classificacao.toLowerCase() : "frio";
           div.innerHTML = `
             <div class="info">${lead.nome} - ${lead.telefone}</div>
             <div class="info">${lead.carro}</div>
             <div class="vendedor">Vendedor: ${lead.vendedor}</div>
-            <div class="classificacao ${lead.classificacao.toLowerCase()}">${lead.classificacao}</div>
+            <div class="classificacao ${classificacao}">${lead.classificacao}</div>
           `;
           container.appendChild(div);
         });

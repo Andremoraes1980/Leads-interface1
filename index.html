@@ -1,3 +1,7 @@
+# Re-run after code execution environment was reset
+from IPython.display import display, HTML
+
+html_code = """
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -94,4 +98,131 @@
       background: #eaeaea;
       border-radius: 10px;
       padding: 0.5rem 1rem;
-      min-width: 280
+      min-width: 280px;
+      flex-shrink: 0;
+    }
+
+    .column h2 {
+      font-size: 0.9rem;
+      margin: 0.5rem 0 0.8rem;
+      text-align: left;
+    }
+
+    .lead {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    }
+
+    .lead-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .lead .info {
+      margin: 0.3rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lead-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .temperatura {
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .quente { background-color: green; }
+    .morno { background-color: orange; }
+    .frio { background-color: blue; }
+
+    .icone-origem {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>CRM de Leads</header>
+
+  <div class="top-bar">
+    <button class="filtro-btn" onclick="toggleFiltro()">Filtro</button>
+    <div class="search-container">
+      <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
+    </div>
+    <button>Criar Novo Lead</button>
+  </div>
+
+  <!-- Painel de Filtro -->
+  <div id="painel-filtro" class="filtro-panel">
+    <label>Data de Chegada</label>
+    <input type="date" />
+    <label>Responsável</label>
+    <input type="text" />
+    <label>Status</label>
+    <select>
+      <option>Todos</option>
+      <option>Nova Proposta</option>
+      <option>Negociação</option>
+      <option>Visita Agendada</option>
+      <option>Não Respondidos</option>
+      <option>Sem Contato</option>
+    </select>
+    <label>Origem</label>
+    <input type="text" />
+    <label>Temperatura</label>
+    <select>
+      <option>Todos</option>
+      <option>Quente</option>
+      <option>Morno</option>
+      <option>Frio</option>
+    </select>
+    <button style="margin-top: 0.5rem; width: 100%;">Filtrar</button>
+  </div>
+
+  <div class="container">
+    <div class="column">
+      <h2>Nova Proposta (3)</h2>
+      <div class="lead">
+        <div class="lead-header">
+          <span>João Silva</span>
+          <span>5min</span>
+        </div>
+        <div class="info">Fiat Argo 2021</div>
+        <div class="info vendedor">Link Vendedor</div>
+        <div class="lead-footer">
+          <span>2h sem resposta</span>
+          <span class="temperatura quente">Quente</span>
+          <img src="webmotors.png" class="icone-origem" alt="Origem">
+        </div>
+      </div>
+    </div>
+    <div class="column"><h2>Não Respondidos (2)</h2></div>
+    <div class="column"><h2>Visita Agendada (1)</h2></div>
+    <div class="column"><h2>Negociação (4)</h2></div>
+    <div class="column"><h2>Sem Contato (5)</h2></div>
+  </div>
+
+  <script>
+    function toggleFiltro() {
+      const painel = document.getElementById("painel-filtro");
+      painel.style.display = painel.style.display === "block" ? "none" : "block";
+    }
+  </script>
+</body>
+</html>
+"""
+
+display(HTML(html_code))

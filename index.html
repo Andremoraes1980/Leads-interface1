@@ -1,102 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <title>CRM de Leads</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    #modalNovoLead {
-      display: none;
-      position: fixed;
-      background: white;
-      padding: 1rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      top: 20%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM de Leads</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header>
+      <h1>CRM de Leads</h1>
+      <button onclick="toggleFiltro()">Filtro</button>
+      <input
+        type="text"
+        id="searchInput"
+        onkeyup="searchCards()"
+        placeholder="Buscar por nome, carro ou temperatura"
+      />
+      <button onclick="abrirModal()">Criar Novo Lead</button>
+    </header>
 
-  <input type="text" placeholder="Buscar por nome, carro ou temp." />
-  <button onclick="abrirModal()">Criar Novo Lead</button>
+    <div class="kanban" id="kanban">
+      <div class="coluna" id="novaProposta">
+        <h2>Nova Proposta <span>(3)</span></h2>
+        <div class="card">
+          <p><strong>João Silva</strong> <span>5min</span></p>
+          <p>Fiat Argo 2021</p>
+          <a href="#">Link Vendedor</a>
+          <p>2h sem resposta <span class="quente">Quente</span> <img src="origem.png" alt="Origem" /></p>
+        </div>
+      </div>
 
-  <div id="leads-container">
-    <h2>Nova Proposta (3)</h2>
-    <p>João Silva 5min</p>
-    <p>Fiat Argo 2021</p>
-    <a href="#">Link Vendedor</a>
-    <p>2h sem resposta Quente <img src="origem.png" alt="Origem" /></p>
+      <div class="coluna" id="naoRespondidos">
+        <h2>Não Respondidos <span>(2)</span></h2>
+      </div>
 
-    <h2>Não Respondidos (2)</h2>
-    <h2>Visita Agendada (1)</h2>
-    <h2>Negociação (4)</h2>
-    <h2>Sem Contato (5)</h2>
-  </div>
+      <div class="coluna" id="visitaAgendada">
+        <h2>Visita Agendada <span>(1)</span></h2>
+      </div>
 
-  <!-- Modal -->
-  <div id="modalNovoLead">
-    <h3>Criar Novo Lead</h3>
-    <input type="text" id="nome" placeholder="Nome" />
-    <input type="text" id="telefone" placeholder="Telefone" />
-    <input type="text" id="veiculo" placeholder="Veículo" />
-    <select id="temperatura">
-      <option value="Quente">Quente</option>
-      <option value="Morno">Morno</option>
-      <option value="Frio">Frio</option>
-    </select>
-    <select id="origem">
-      <option value="Instagram">Instagram</option>
-      <option value="Facebook">Facebook</option>
-      <option value="Google">Google</option>
-    </select>
-    <button onclick="salvarLead()">Salvar Lead</button>
-    <button onclick="fecharModal()">Fechar</button>
-  </div>
+      <div class="coluna" id="negociacao">
+        <h2>Negociação <span>(4)</span></h2>
+      </div>
 
-  <script>
-    // Supabase setup
-    const SUPABASE_URL = 'https://dpanpvimjgybiyjnuyzi.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwYW5wdmltamd5Yml5am51eXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2ODYxMzUsImV4cCI6MjA2MDI2MjEzNX0.r0YdAO3ZNiM1uzHIatTnAHwvaDbGV1EhIt8Vffo4-38';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      <div class="coluna" id="semContato">
+        <h2>Sem Contato <span>(5)</span></h2>
+      </div>
+    </div>
 
-    function abrirModal() {
-      document.getElementById('modalNovoLead').style.display = 'block';
-    }
+    <div id="modal" class="modal hidden">
+      <h2>Criar Novo Lead</h2>
+      <form id="formLead">
+        <input type="text" id="nome" placeholder="Nome" required />
+        <input type="text" id="telefone" placeholder="Telefone" required />
+        <input type="text" id="veiculo" placeholder="Veículo" required />
+        <select id="temperatura">
+          <option value="">Temperatura</option>
+          <option value="Quente">Quente</option>
+          <option value="Morno">Morno</option>
+          <option value="Frio">Frio</option>
+        </select>
+        <select id="origem">
+          <option value="">Origem</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Facebook">Facebook</option>
+          <option value="WhatsApp">WhatsApp</option>
+        </select>
+        <button type="submit">Salvar Lead</button>
+        <button type="button" onclick="fecharModal()">Fechar</button>
+      </form>
+    </div>
 
-    function fecharModal() {
-      document.getElementById('modalNovoLead').style.display = 'none';
-    }
-
-    async function salvarLead() {
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-      const veiculo = document.getElementById('veiculo').value;
-      const temperatura = document.getElementById('temperatura').value;
-      const origem = document.getElementById('origem').value;
-
-      const { data, error } = await supabase
-        .from('leads')
-        .insert([
-          {
-            nome,
-            telefone,
-            veiculo,
-            temperatura,
-            origem
-          }
-        ]);
-
-      if (error) {
-        alert('Erro ao salvar lead: ' + error.message);
-      } else {
-        alert('Lead salvo com sucesso!');
-        fecharModal();
-        location.reload();
-      }
-    }
-  </script>
-</body>
+    <div id="filtro" class="filtro hidden">
+      <h3>Filtro de Leads</h3>
+      <input type="date" id="filtroData" />
+      <select id="filtroTemperatura">
+        <option value="">Temperatura</option>
+        <option value="Quente">Quente</option>
+        <option value="Morno">Morno</option>
+        <option value="Frio">Frio</option>
+      </select>
+      <select id="filtroResponsavel">
+        <option value="">Responsável</option>
+        <option value="João">João</option>
+        <option value="Maria">Maria</option>
+      </select>
+      <button onclick="fecharFiltro()">Fechar</button>
+    </div>
+  </body>
 </html>

@@ -1,91 +1,250 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CRM de Leads</title>
-    <link rel="stylesheet" href="style.css" />
-    <script defer src="script.js"></script>
-  </head>
-  <body>
-    <header>
-      <h1>CRM de Leads</h1>
-      <button onclick="toggleFiltro()">Filtro</button>
-      <input
-        type="text"
-        id="searchInput"
-        onkeyup="searchCards()"
-        placeholder="Buscar por nome, carro ou temperatura"
-      />
-      <button onclick="abrirModal()">Criar Novo Lead</button>
-    </header>
-
-    <div class="kanban" id="kanban">
-      <div class="coluna" id="novaProposta">
-        <h2>Nova Proposta <span>(3)</span></h2>
-        <div class="card">
-          <p><strong>João Silva</strong> <span>5min</span></p>
-          <p>Fiat Argo 2021</p>
-          <a href="#">Link Vendedor</a>
-          <p>2h sem resposta <span class="quente">Quente</span> <img src="origem.png" alt="Origem" /></p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRM de Leads</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+    }
+    header {
+      background-color: #1a73e8;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      margin: 1rem;
+      padding: 0.5rem 1rem;
+    }
+    .top-left {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .top-bar input {
+      padding: 0.5rem;
+      width: 300px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .top-bar button {
+      padding: 0.5rem 1rem;
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .container {
+      display: flex;
+      overflow-x: auto;
+      height: 75vh;
+      padding: 1rem;
+      gap: 1rem;
+    }
+    .column {
+      background: #eaeaea;
+      border-radius: 10px;
+      padding: 0.5rem;
+      min-width: 280px;
+      flex-shrink: 0;
+    }
+    .column h2 {
+      font-size: 0.9rem;
+      margin: 0.3rem 0 0.5rem 0;
+      text-align: left;
+      padding-left: 0.5rem;
+    }
+    .lead {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.7rem;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    }
+    .lead-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+    .lead .info {
+      margin: 0.3rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lead-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .temperatura {
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    .quente { background-color: green; }
+    .morno { background-color: orange; }
+    .frio { background-color: blue; }
+    .icone-origem {
+      width: 20px;
+      height: 20px;
+    }
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      display: none;
+      z-index: 1000;
+    }
+    .modal input, .modal select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .modal h3 {
+      margin-top: 0;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 999;
+    }
+    .modal button {
+      background: #1a73e8;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>CRM de Leads</header>
+  <div class="top-bar">
+    <div class="top-left">
+      <button onclick="abrirModal('filtroModal')">Filtro</button>
+    </div>
+    <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
+    <button onclick="abrirModal('leadModal')">Criar Novo Lead</button>
+  </div>
+  <div class="container">
+    <div class="column">
+      <h2>Nova Proposta (3)</h2>
+      <div class="lead">
+        <div class="lead-header">
+          <span>João Silva</span>
+          <span>5min</span>
+        </div>
+        <div class="info">Fiat Argo 2021</div>
+        <div class="info vendedor">Link Vendedor</div>
+        <div class="lead-footer">
+          <span>2h sem resposta</span>
+          <span class="temperatura quente">Quente</span>
+          <img src="webmotors.png" class="icone-origem" alt="Origem">
         </div>
       </div>
-
-      <div class="coluna" id="naoRespondidos">
-        <h2>Não Respondidos <span>(2)</span></h2>
-      </div>
-
-      <div class="coluna" id="visitaAgendada">
-        <h2>Visita Agendada <span>(1)</span></h2>
-      </div>
-
-      <div class="coluna" id="negociacao">
-        <h2>Negociação <span>(4)</span></h2>
-      </div>
-
-      <div class="coluna" id="semContato">
-        <h2>Sem Contato <span>(5)</span></h2>
-      </div>
     </div>
+    <div class="column"><h2>Não Respondidos (2)</h2></div>
+    <div class="column"><h2>Visita Agendada (1)</h2></div>
+    <div class="column"><h2>Negociação (4)</h2></div>
+    <div class="column"><h2>Sem Contato (5)</h2></div>
+  </div>
 
-    <div id="modal" class="modal hidden">
-      <h2>Criar Novo Lead</h2>
-      <form id="formLead">
-        <input type="text" id="nome" placeholder="Nome" required />
-        <input type="text" id="telefone" placeholder="Telefone" required />
-        <input type="text" id="veiculo" placeholder="Veículo" required />
-        <select id="temperatura">
-          <option value="">Temperatura</option>
-          <option value="Quente">Quente</option>
-          <option value="Morno">Morno</option>
-          <option value="Frio">Frio</option>
-        </select>
-        <select id="origem">
-          <option value="">Origem</option>
-          <option value="Instagram">Instagram</option>
-          <option value="Facebook">Facebook</option>
-          <option value="WhatsApp">WhatsApp</option>
-        </select>
-        <button type="submit">Salvar Lead</button>
-        <button type="button" onclick="fecharModal()">Fechar</button>
-      </form>
-    </div>
+<!-- Modal Criar Lead -->
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="leadModal">
+  <h3>Criar Novo Lead</h3>
+  <input type="text" id="nome" placeholder="Nome">
+  <input type="text" id="telefone" placeholder="Telefone">
+  <input type="text" id="veiculo" placeholder="Veículo">
+  <select id="temperatura">
+    <option value="">Temperatura</option>
+    <option value="quente">Quente</option>
+    <option value="morno">Morno</option>
+    <option value="frio">Frio</option>
+  </select>
+  <select id="origem">
+    <option value="">Origem</option>
+    <option>Webmotors</option>
+    <option>Mercado Livre</option>
+    <option>OLX</option>
+    <option>iCarros</option>
+    <option>Facebook</option>
+    <option>Instagram</option>
+  </select>
+  <div style="display: flex; justify-content: space-between; gap: 1rem;">
+    <button onclick="fecharModal()">Fechar</button>
+    <button onclick="criarLead()">Criar</button>
+  </div>
+</div>
 
-    <div id="filtro" class="filtro hidden">
-      <h3>Filtro de Leads</h3>
-      <input type="date" id="filtroData" />
-      <select id="filtroTemperatura">
-        <option value="">Temperatura</option>
-        <option value="Quente">Quente</option>
-        <option value="Morno">Morno</option>
-        <option value="Frio">Frio</option>
-      </select>
-      <select id="filtroResponsavel">
-        <option value="">Responsável</option>
-        <option value="João">João</option>
-        <option value="Maria">Maria</option>
-      </select>
-      <button onclick="fecharFiltro()">Fechar</button>
-    </div>
-  </body>
+  <!-- Modal Filtro -->
+  <div class="modal" id="filtroModal">
+    <h3>Filtro de Leads</h3>
+    <input type="date" placeholder="Data de Chegada">
+    <select>
+      <option value="">Temperatura</option>
+      <option value="quente">Quente</option>
+      <option value="morno">Morno</option>
+      <option value="frio">Frio</option>
+    </select>
+    <input type="text" placeholder="Responsável">
+    <button onclick="fecharModal()">Fechar</button>
+  </div>
+
+  <script>
+    function abrirModal(id) {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById(id).style.display = 'block';
+    }
+    function fecharModal() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('leadModal').style.display = 'none';
+      document.getElementById('filtroModal').style.display = 'none';
+    }
+function criarLead() {
+  const nome = document.getElementById("nome").value;
+  const telefone = document.getElementById("telefone").value;
+  const veiculo = document.getElementById("veiculo").value;
+  const temperatura = document.getElementById("temperatura").value;
+  const origem = document.getElementById("origem").value;
+
+  console.log("Novo Lead:", { nome, telefone, veiculo, temperatura, origem });
+
+  alert("Lead criado com sucesso!");
+  fecharModal();
+}
+</script>
+</body>
 </html>

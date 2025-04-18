@@ -4,13 +4,190 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Conversa</title>
-  
-  <!-- Font Awesome (modern icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
-    /* Mesmo CSS do seu layout, mantido sem alterações */
-    /* ... (todo o seu CSS original continua aqui, sem mudança) ... */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      padding: 1rem;
+    }
+
+    .chat-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .chat-header {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .chat-header .top-bar {
+      background-color: #1a73e8;
+      color: white;
+      padding: 0.5rem;
+      text-align: center;
+      border-radius: 8px 8px 0 0;
+      font-weight: bold;
+      font-size: 1rem;
+      margin: -1rem -1rem 1rem -1rem;
+    }
+
+    .chat-header-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .chat-header-left, .chat-header-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .chat-header-left .info-line i,
+    .chat-header-right .info-line i {
+      margin-right: 0.4rem;
+    }
+
+    .info-line {
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+
+    .status-select, .temp-select {
+      padding: 0.3rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 160px;
+    }
+
+    .temp-select.quente { background-color: #2e7d32; color: white; }
+    .temp-select.morno { background-color: #f9a825; color: white; }
+    .temp-select.frio  { background-color: #1565c0; color: white; }
+
+    .chat-area {
+      background: #eaeaea;
+      border-radius: 10px;
+      padding: 1rem;
+      max-height: 60vh;
+      overflow-y: auto;
+      margin-bottom: 6rem;
+    }
+
+    .chat-date {
+      font-size: 0.75rem;
+      color: #666;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .message.vendedor {
+      justify-content: flex-end;
+    }
+
+    .message .bubble {
+      background: white;
+      padding: 0.8rem;
+      border-radius: 10px;
+      max-width: 60%;
+      position: relative;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    }
+
+    .message .initials {
+      background-color: #1a73e8;
+      color: white;
+      font-weight: bold;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .message.vendedor .initials {
+      background-color: #999;
+      margin-left: 0.5rem;
+      margin-right: 0;
+    }
+
+    .bubble .sender {
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .bubble .time {
+      font-size: 0.7rem;
+      text-align: right;
+      margin-top: 0.5rem;
+      color: gray;
+    }
+
+    .chat-input {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      padding: 1rem;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: center;
+    }
+
+    .chat-input .input-area {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input textarea {
+      flex: 1;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      padding: 0.6rem;
+      resize: none;
+      height: 50px;
+    }
+
+    .chat-input button {
+      background-color: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0 1rem;
+      cursor: pointer;
+    }
+
+    .chat-input .tools {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .chat-input .tools i {
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #555;
+    }
+
   </style>
 </head>
 <body>
@@ -19,9 +196,9 @@
       <div class="top-bar">Conversa</div>
       <div class="chat-header-content">
         <div class="chat-header-left">
-          <div class="info-line"><i class="fas fa-user"></i> João Silva</div>
-          <div class="info-line"><i class="fab fa-whatsapp"></i> (11) 91234-5678</div>
-          <div class="info-line"><i class="fas fa-user-tie"></i> Vendedor: Carlos</div>
+          <div class="info-line"><i class="bi bi-person-fill"></i> João Silva</div>
+          <div class="info-line"><i class="bi bi-whatsapp"></i> (11) 91234-5678</div>
+          <div class="info-line"><i class="bi bi-person-badge"></i> Vendedor: Carlos</div>
           <div class="info-line">
             <select class="status-select">
               <option>Nova Proposta</option>
@@ -38,8 +215,8 @@
           </div>
         </div>
         <div class="chat-header-right">
-          <div class="info-line"><i class="fas fa-car"></i> Fiat Argo 2021</div>
-          <div class="info-line"><i class="fas fa-dollar-sign"></i> R$ 75.000</div>
+          <div class="info-line"><i class="bi bi-car-front"></i> Fiat Argo 2021</div>
+          <div class="info-line"><i class="bi bi-currency-dollar"></i> R$ 75.000</div>
         </div>
       </div>
     </div>
@@ -70,8 +247,8 @@
       <div class="input-area">
         <textarea placeholder="Escreva sua mensagem..."></textarea>
         <div class="tools">
-          <i class="fas fa-calendar-alt"></i>
-          <i class="fas fa-sticky-note"></i>
+          <i class="bi bi-calendar3"></i>
+          <i class="bi bi-journal-text"></i>
         </div>
         <button>Enviar</button>
       </div>

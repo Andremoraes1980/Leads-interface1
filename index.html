@@ -3,6 +3,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRM de Leads</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -104,121 +105,83 @@
       width: 20px;
       height: 20px;
     }
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-      padding: 2rem;
-      width: 90%;
-      max-width: 400px;
-      display: none;
-      z-index: 1000;
-    }
-    .modal input, .modal select {
-      width: 100%;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-    .modal h3 {
-      margin-top: 0;
-    }
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      z-index: 999;
-    }
-    .modal button {
-      background: #1a73e8;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
   <header>CRM de Leads</header>
   <div class="top-bar">
     <div class="top-left">
-      <button onclick="abrirModal('filtroModal')">Filtro</button>
+      <button onclick="alert('Abrir filtros')">Filtro</button>
     </div>
     <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
-    <button onclick="abrirModal('leadModal')">Criar Novo Lead</button>
-  </div>  <div class="container">
-    <div class="column">
-      <h2>Nova Proposta (3)</h2>
-      <div class="lead">
-        <div class="lead-header">
-          <span>João Silva</span>
-          <span>5min</span>
-        </div>
-        <div class="info">Fiat Argo 2021</div>
-        <div class="info vendedor">Link Vendedor</div>
-        <div class="lead-footer">
-          <span>2h sem resposta</span>
-          <span class="temperatura quente">Quente</span>
-          <img src="webmotors.png" class="icone-origem" alt="Origem">
-        </div>
-      </div>
+    <button onclick="alert('Abrir modal de criação de lead')">Criar Novo Lead</button>
+  </div>
+  <div class="container">
+    <div class="column" data-status="Nova Proposta">
+      <h2>Nova Proposta</h2>
     </div>
-    <div class="column"><h2>Não Respondidos (2)</h2></div>
-    <div class="column"><h2>Visita Agendada (1)</h2></div>
-    <div class="column"><h2>Negociação (4)</h2></div>
-    <div class="column"><h2>Sem Contato (5)</h2></div>
-  </div>  <!-- Modal Criar Lead -->  <div class="overlay" id="overlay"></div>
-  <div class="modal" id="leadModal">
-    <h3>Criar Novo Lead</h3>
-    <input type="text" placeholder="Nome">
-    <input type="text" placeholder="Telefone">
-    <input type="text" placeholder="Veículo">
-    <select>
-      <option value="">Temperatura</option>
-      <option value="quente">Quente</option>
-      <option value="morno">Morno</option>
-      <option value="frio">Frio</option>
-    </select>
-    <select>
-      <option value="">Origem</option>
-      <option>Webmotors</option>
-      <option>Mercado Livre</option>
-      <option>OLX</option>
-      <option>iCarros</option>
-      <option>Facebook</option>
-      <option>Instagram</option>
-    </select>
-    <button onclick="fecharModal()">Fechar</button>
-  </div>  <!-- Modal Filtro -->  <div class="modal" id="filtroModal">
-    <h3>Filtro de Leads</h3>
-    <input type="date" placeholder="Data de Chegada">
-    <select>
-      <option value="">Temperatura</option>
-      <option value="quente">Quente</option>
-      <option value="morno">Morno</option>
-      <option value="frio">Frio</option>
-    </select>
-    <input type="text" placeholder="Responsável">
-    <button onclick="fecharModal()">Fechar</button>
-  </div>  <script>
-    function abrirModal(id) {
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById(id).style.display = 'block';
+    <div class="column" data-status="Não Respondido">
+      <h2>Não Respondidos</h2>
+    </div>
+    <div class="column" data-status="Visita Agendada">
+      <h2>Visita Agendada</h2>
+    </div>
+    <div class="column" data-status="Negociação">
+      <h2>Negociação</h2>
+    </div>
+    <div class="column" data-status="Sem Contato">
+      <h2>Sem Contato</h2>
+    </div>
+  </div>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>  <script>
+    const SUPABASE_URL = "https://dpanpvimjgybiyjnuyzi.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwYW5wdmltamd5Yml5am51eXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2ODYxMzUsImV4cCI6MjA2MDI2MjEzNX0.r0YdAO3ZNiM1uzHIatTnAHwvaDbGV1EhIt8Vffo4-38";
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function carregarLeads() {
+      const { data: leads, error } = await supabase
+        .from("leads1")
+        .select("*");
+
+      if (error) {
+        console.error("Erro ao buscar leads:", error);
+        return;
+      }
+
+      const columns = document.querySelectorAll(".column");
+      columns.forEach(col => col.innerHTML = `<h2>${col.getAttribute("data-status")} (0)</h2>`);
+
+      const statusCount = {};
+
+      leads.forEach((lead) => {
+        const col = document.querySelector(`.column[data-status='${lead.status}']`);
+        if (col) {
+          const div = document.createElement("div");
+          div.className = "lead";
+          div.innerHTML = `
+            <div class="lead-header">
+              <span>${lead.nome}</span>
+              <span>5min</span>
+            </div>
+            <div class="info">${lead.carro}</div>
+            <div class="info vendedor">${lead.vendedor}</div>
+            <div class="lead-footer">
+              <span>2h sem resposta</span>
+              <span class="temperatura ${lead.classificacao.toLowerCase()}">${lead.classificacao}</span>
+              <img src="webmotors.png" class="icone-origem" alt="Origem">
+            </div>`;
+          col.appendChild(div);
+
+          statusCount[lead.status] = (statusCount[lead.status] || 0) + 1;
+        }
+      });
+
+      columns.forEach(col => {
+        const status = col.getAttribute("data-status");
+        const count = statusCount[status] || 0;
+        col.querySelector("h2").textContent = `${status} (${count})`;
+      });
     }
-    function fecharModal() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('leadModal').style.display = 'none';
-      document.getElementById('filtroModal').style.display = 'none';
-    }
+
+    carregarLeads();
   </script></body>
 </html>

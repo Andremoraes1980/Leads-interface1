@@ -2,151 +2,167 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Conversa do Lead</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Conversa com Lead</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
+      background: #ffffff;
     }
 
     header {
       background-color: #1a73e8;
       color: white;
-      padding: 0.7rem 1rem;
+      padding: 0.75rem 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 4px solid #125abe;
+      border-radius: 0 0 10px 10px;
+      margin: 1rem;
+      font-size: 0.95rem;
     }
 
-    .info-esquerda {
+    .header-left,
+    .header-right {
       display: flex;
       flex-direction: column;
+      gap: 0.3rem;
     }
 
-    .info-direita {
+    .header-right {
       text-align: right;
     }
 
-    .chat-container {
-      padding: 1rem;
-      padding-bottom: 70px;
-      max-height: calc(100vh - 120px);
-      overflow-y: auto;
+    .status-select {
+      padding: 0.3rem;
+      border-radius: 5px;
+      border: none;
     }
 
-    .mensagem-dia {
+    .mensagens {
+      margin: 1rem;
+      margin-top: 0;
+      padding: 1rem;
+      background-color: #f1f1f1;
+      border-radius: 10px;
+      height: calc(100vh - 230px);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .data-mensagem {
       text-align: center;
-      font-size: 0.75rem;
-      color: #777;
+      font-size: 0.8rem;
       margin: 1rem 0 0.5rem;
+      color: #555;
     }
 
     .mensagem {
-      max-width: 70%;
-      padding: 0.7rem 1rem;
-      border-radius: 12px;
-      margin-bottom: 1rem;
+      max-width: 90%;
+      padding: 1rem 1.2rem;
+      border-radius: 16px;
+      margin-bottom: 1.2rem;
       position: relative;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
     }
 
-    .mensagem .autor {
-      font-weight: bold;
-      font-size: 0.75rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .mensagem .hora {
-      font-size: 0.65rem;
-      position: absolute;
-      bottom: 5px;
-      right: 10px;
-      color: #666;
-    }
-
-    .mensagem.cliente {
+    .cliente {
       background-color: #ffffff;
       align-self: flex-start;
+      text-align: left;
     }
 
-    .mensagem.vendedor {
-      background-color: #dbeafe;
+    .vendedor {
+      background-color: #dcf0ff;
       align-self: flex-end;
+      text-align: left;
     }
 
-    .chat-wrapper {
-      display: flex;
-      flex-direction: column;
+    .nome-remetente {
+      font-weight: bold;
+      margin-bottom: 0.4rem;
+      font-size: 0.85rem;
+    }
+
+    .hora {
+      font-size: 0.7rem;
+      text-align: right;
+      color: #666;
+      margin-top: 0.5rem;
     }
 
     .barra-mensagem {
       position: fixed;
       bottom: 0;
       left: 0;
-      right: 0;
+      width: 100%;
       background-color: white;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      padding: 0.75rem 1rem;
       display: flex;
-      gap: 0.5rem;
-      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      border-top: 1px solid #ddd;
     }
 
     .barra-mensagem input {
-      flex-grow: 1;
-      padding: 0.7rem;
+      flex: 1;
+      padding: 0.75rem;
       border-radius: 20px;
       border: 1px solid #ccc;
+      font-size: 1rem;
     }
 
     .barra-mensagem button {
-      padding: 0.6rem 1rem;
       background-color: #1a73e8;
-      border: none;
       color: white;
+      border: none;
       border-radius: 20px;
+      padding: 0.75rem 1.5rem;
       cursor: pointer;
+      font-size: 1rem;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="info-esquerda">
-      <strong>João Silva</strong>
-      <small>Telefone: (11) 99999-9999 | Vendedor: Marcos</small>
+    <div class="header-left">
+      <div><strong>João da Silva</strong></div>
+      <div>(11) 91234-5678</div>
+      <div>
+        <select class="status-select">
+          <option>Nova Proposta</option>
+          <option>Negociação</option>
+          <option>Sem Contato</option>
+        </select>
+      </div>
     </div>
-    <div class="info-direita">
-      <strong>Fiat Argo 2021</strong><br />
-      <select>
-        <option value="novo">Nova Proposta</option>
-        <option value="negociacao">Negociação</option>
-        <option value="vendido">Vendido</option>
-      </select>
+    <div class="header-right">
+      <div><strong>Fiat Argo 2021</strong></div>
+      <div>R$ 58.000</div>
     </div>
   </header>
 
-  <div class="chat-container">
-    <div class="chat-wrapper">
-      <div class="mensagem-dia">Hoje</div>
+  <div class="mensagens">
+    <div class="data-mensagem">18 de Abril</div>
 
-      <div class="mensagem cliente">
-        <div class="autor">João Silva</div>
-        Estou interessado no carro ainda disponível?
-        <div class="hora">09:30</div>
-      </div>
-
-      <div class="mensagem vendedor">
-        <div class="autor">Marcos</div>
-        Sim, João! Está disponível sim.
-        <div class="hora">09:35</div>
-      </div>
-
-      <!-- Adicione mais mensagens aqui -->
+    <div class="mensagem cliente">
+      <div class="nome-remetente">João da Silva</div>
+      Estou interessado no carro, ainda está disponível?
+      <div class="hora">09:30</div>
     </div>
+
+    <div class="mensagem vendedor">
+      <div class="nome-remetente">Vendedor</div>
+      Olá João! Sim, o carro ainda está disponível. Deseja agendar uma visita?
+      <div class="hora">09:32</div>
+    </div>
+
   </div>
 
   <div class="barra-mensagem">

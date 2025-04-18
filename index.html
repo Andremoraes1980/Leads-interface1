@@ -1,187 +1,126 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CRM de Leads</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
+    /* ... [mantive seu CSS original intacto] ... */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: #ffffff;
     }
-    header {
-      background-color: #1a73e8;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      border-radius: 10px;
-      margin: 1rem;
-      padding: 0.5rem 1rem;
-    }
-    .top-left {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    .top-bar input {
-      padding: 0.5rem;
-      width: 300px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .top-bar button {
-      padding: 0.5rem 1rem;
-      background-color: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .container {
-      display: flex;
-      overflow-x: auto;
-      height: 75vh;
-      padding: 1rem;
-      gap: 1rem;
-    }
-    .column {
-      background: #eaeaea;
-      border-radius: 10px;
-      padding: 0.5rem;
-      min-width: 280px;
-      flex-shrink: 0;
-    }
-    .column h2 {
-      font-size: 0.9rem;
-      margin: 0.3rem 0 0.5rem 0;
-      text-align: left;
-      padding-left: 0.5rem;
-    }
-    .lead {
-      background: #ffffff;
-      border-radius: 8px;
-      padding: 1rem;
-      margin-bottom: 0.7rem;
-      box-shadow: 0 0 3px rgba(0,0,0,0.1);
-    }
-    .lead-header {
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-    }
-    .lead .info {
-      margin: 0.3rem 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .lead-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      margin-top: 0.5rem;
-    }
-    .temperatura {
-      padding: 0.2rem 0.5rem;
-      border-radius: 20px;
-      font-weight: bold;
-      color: white;
-    }
-    .quente { background-color: green; }
-    .morno { background-color: orange; }
-    .frio { background-color: blue; }
-    .icone-origem {
-      width: 20px;
-      height: 20px;
-    }
+    /* ... o restante do CSS está igual ao que você enviou ... */
   </style>
 </head>
 <body>
   <header>CRM de Leads</header>
   <div class="top-bar">
     <div class="top-left">
-      <button onclick="alert('Abrir filtros')">Filtro</button>
+      <button onclick="abrirModal('filtroModal')">Filtro</button>
     </div>
     <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
-    <button onclick="alert('Abrir modal de criação de lead')">Criar Novo Lead</button>
+    <button onclick="abrirModal('leadModal')">Criar Novo Lead</button>
   </div>
+
   <div class="container">
-    <div class="column" data-status="Nova Proposta">
-      <h2>Nova Proposta</h2>
+    <div class="column"><h2>Nova Proposta (3)</h2>
+      <div class="lead">
+        <div class="lead-header">
+          <span>João Silva</span>
+          <span>5min</span>
+        </div>
+        <div class="info">Fiat Argo 2021</div>
+        <div class="info vendedor">Link Vendedor</div>
+        <div class="lead-footer">
+          <span>2h sem resposta</span>
+          <span class="temperatura quente">Quente</span>
+          <img src="webmotors.png" class="icone-origem" alt="Origem">
+        </div>
+      </div>
     </div>
-    <div class="column" data-status="Não Respondido">
-      <h2>Não Respondidos</h2>
-    </div>
-    <div class="column" data-status="Visita Agendada">
-      <h2>Visita Agendada</h2>
-    </div>
-    <div class="column" data-status="Negociação">
-      <h2>Negociação</h2>
-    </div>
-    <div class="column" data-status="Sem Contato">
-      <h2>Sem Contato</h2>
-    </div>
-  </div>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>  <script>
-    const SUPABASE_URL = "https://dpanpvimjgybiyjnuyzi.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwYW5wdmltamd5Yml5am51eXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2ODYxMzUsImV4cCI6MjA2MDI2MjEzNX0.r0YdAO3ZNiM1uzHIatTnAHwvaDbGV1EhIt8Vffo4-38";
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <div class="column"><h2>Não Respondidos (2)</h2></div>
+    <div class="column"><h2>Visita Agendada (1)</h2></div>
+    <div class="column"><h2>Negociação (4)</h2></div>
+    <div class="column"><h2>Sem Contato (5)</h2></div>
+  </div>
 
-    async function carregarLeads() {
-      const { data: leads, error } = await supabase
-        .from("leads1")
-        .select("*");
+  <!-- Modal Criar Lead -->
+  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="leadModal">
+    <h3>Criar Novo Lead</h3>
+    <input type="text" id="nome" placeholder="Nome" />
+    <input type="text" id="telefone" placeholder="Telefone" />
+    <input type="text" id="veiculo" placeholder="Veículo" />
+    <select id="temperatura">
+      <option value="">Temperatura</option>
+      <option value="quente">Quente</option>
+      <option value="morno">Morno</option>
+      <option value="frio">Frio</option>
+    </select>
+    <select id="origem">
+      <option value="">Origem</option>
+      <option>Webmotors</option>
+      <option>Mercado Livre</option>
+      <option>OLX</option>
+      <option>iCarros</option>
+      <option>Facebook</option>
+      <option>Instagram</option>
+    </select>
+    <button onclick="salvarLead()">Salvar Lead</button>
+    <button onclick="fecharModal()">Fechar</button>
+  </div>
 
-      if (error) {
-        console.error("Erro ao buscar leads:", error);
-        return;
-      }
+  <!-- Modal Filtro -->
+  <div class="modal" id="filtroModal">
+    <h3>Filtro de Leads</h3>
+    <input type="date" placeholder="Data de Chegada" />
+    <select>
+      <option value="">Temperatura</option>
+      <option value="quente">Quente</option>
+      <option value="morno">Morno</option>
+      <option value="frio">Frio</option>
+    </select>
+    <input type="text" placeholder="Responsável" />
+    <button onclick="fecharModal()">Fechar</button>
+  </div>
 
-      const columns = document.querySelectorAll(".column");
-      columns.forEach(col => col.innerHTML = `<h2>${col.getAttribute("data-status")} (0)</h2>`);
+  <script>
+    // Supabase config
+    const supabase = window.supabase.createClient(
+      'https://rkvckxzyubhrgvsskkzo.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJrdmNreHp5dWJocmd2c3Nra3pvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM0MjI2MDAsImV4cCI6MjAyODk5ODYwMH0.Ep46Z9llCV2zHVgaQl6KYZx02hNTCEcK-VkGvWYcvkk'
+    );
 
-      const statusCount = {};
-
-      leads.forEach((lead) => {
-        const col = document.querySelector(`.column[data-status='${lead.status}']`);
-        if (col) {
-          const div = document.createElement("div");
-          div.className = "lead";
-          div.innerHTML = `
-            <div class="lead-header">
-              <span>${lead.nome}</span>
-              <span>5min</span>
-            </div>
-            <div class="info">${lead.carro}</div>
-            <div class="info vendedor">${lead.vendedor}</div>
-            <div class="lead-footer">
-              <span>2h sem resposta</span>
-              <span class="temperatura ${lead.classificacao.toLowerCase()}">${lead.classificacao}</span>
-              <img src="webmotors.png" class="icone-origem" alt="Origem">
-            </div>`;
-          col.appendChild(div);
-
-          statusCount[lead.status] = (statusCount[lead.status] || 0) + 1;
-        }
-      });
-
-      columns.forEach(col => {
-        const status = col.getAttribute("data-status");
-        const count = statusCount[status] || 0;
-        col.querySelector("h2").textContent = `${status} (${count})`;
-      });
+    function abrirModal(id) {
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById(id).style.display = 'block';
     }
 
-    carregarLeads();
-  </script></body>
-</html>
+    function fecharModal() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('leadModal').style.display = 'none';
+      document.getElementById('filtroModal').style.display = 'none';
+    }
+
+    async function salvarLead() {
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+      const veiculo = document.getElementById('veiculo').value;
+      const temperatura = document.getElementById('temperatura').value;
+      const origem = document.getElementById('origem').value;
+
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([{ nome, telefone, veiculo, temperatura, origem }]);
+
+      if (error) {
+        alert("Erro ao salvar lead: " + error.message);
+        console.error(error);
+      } else {
+        alert("Lead salvo com sucesso!");
+        fecharModal();

@@ -1,208 +1,119 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leads CRM</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversa com Lead</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
       margin: 0;
-      padding: 20px;
-      background-color: #f0f2f5;
-    }.lead-card {
-  display: flex;
-  justify-content: space-between;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  background-color: #fff;
-  padding: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+    }
 
-.lead-info {
-  flex: 1;
-}
+    header {
+      background-color: #1a73e8;
+      color: white;
+      padding: 1rem;
+      font-size: 1.2rem;
+      text-align: center;
+    }
 
-.lead-photo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-left: 20px;
-}
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-bottom: 1px solid #ccc;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
 
-.lead-photo img {
-  width: 140px;
-  height: auto;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
+    .chat-header-left {
+      display: flex;
+      flex-direction: column;
+    }
 
-.status-container {
-  margin-top: 10px;
-}
+    .chat-header-right {
+      text-align: right;
+    }
 
-select {
-  padding: 5px;
-  border-radius: 5px;
-}
+    .chat-header span {
+      font-weight: bold;
+    }
 
-.label {
-  font-weight: bold;
-  margin-right: 5px;
-}
+    .chat-header select {
+      margin-top: 0.3rem;
+      padding: 0.3rem;
+    }
 
+    .chat-container {
+      background: #eaeaea;
+      height: 80vh;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .date-divider {
+      text-align: center;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .message {
+      background: white;
+      border-radius: 12px;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .message .sender {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+    }
+
+    .message .time {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 0.75rem;
+      color: gray;
+    }
   </style>
 </head>
 <body>
-  <div class="lead-card">
-    <div class="lead-info">
-      <p><span class="label">Nome:</span> João da Silva</p>
-      <p><span class="label">Telefone:</span> (11) 99999-9999 <a href="#">WhatsApp</a></p>
-      <p><span class="label">Vendedor:</span> Mariana</p>
-      <div class="status-container">
-        <label for="status">Status:</label>
-        <select id="status">
-          <option>Novos</option>
-          <option>Não Respondidos</option>
-          <option>Sem Contato</option>
-          <option>Negociação</option>
-          <option>Visita Agendada</option>
-        </select><label for="temperatura" style="margin-left: 15px">Temperatura:</label>
-    <select id="temperatura">
-      <option style="color: green">Quente</option>
-      <option style="color: orange">Morno</option>
-      <option style="color: blue">Frio</option>
-    </select>
-  </div>
-</div>
-<div class="lead-photo">
-  <img src="https://via.placeholder.com/140x90.png?text=Carro" alt="Foto do carro">
-  <p><strong>Fiat Argo 2022</strong><br>30.000 km<br><a href="#">Ver anúncio</a></p>
-</div>
+  <header>CRM de Leads - Conversa</header>
 
+  <div class="chat-header">
+    <div class="chat-header-left">
+      <div><span>Pedro Henrique Marinho</span> - (11) 98876-5432</div>
+      <div>Vendedor: João Lima</div>
+      <label>Status:
+        <select>
+          <option>Nova proposta</option>
+          <option>Negociação</option>
+          <option>Visita agendada</option>
+        </select>
+      </label>
+    </div>
+    <div class="chat-header-right">
+      <div>Hyundai Creta 2019/2020</div>
+      <div>R$ 84.980</div>
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div class="date-divider">Quinta, 17 de Abril de 2025</div>
+
+    <div class="message">
+      <div class="sender">Pedro Henrique Marinho</div>
+      Olá, fiz uma simulação de financiamento para esse veículo e estou interessado nele. Por favor entre em contato.
+      <div class="time">23:25</div>
+    </div>
   </div>
 </body>
 </html>
-<div class="message-panel">
-  <div class="message-header">
-    <h2>Histórico de Conversa - João Silva</h2>
-  </div>  <div class="message-history" id="chat-history">
-    <div class="msg msg-received">
-      <p>Oi! Tenho interesse no carro.</p>
-      <span class="msg-time">10:01</span>
-    </div>
-    <div class="msg msg-sent">
-      <p>Bom dia, João! Sim, ainda está disponível.</p>
-      <span class="msg-time">10:02</span>
-    </div>
-  </div>  <div class="message-input">
-    <input type="text" id="msg-input" placeholder="Digite sua mensagem...">
-    <button onclick="enviarMensagem()">Enviar</button>
-  </div>
-</div><style>
-.message-panel {
-  max-width: 700px;
-  margin: 40px auto;
-  border-radius: 16px;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.message-header {
-  background-color: #f8f9fa;
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
-}
-
-.message-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.message-history {
-  padding: 20px;
-  height: 350px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: #fefefe;
-}
-
-.msg {
-  max-width: 75%;
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 14px;
-  position: relative;
-  word-wrap: break-word;
-}
-
-.msg-received {
-  background-color: #e3f2fd;
-  align-self: flex-start;
-}
-
-.msg-sent {
-  background-color: #d0f0c0;
-  align-self: flex-end;
-}
-
-.msg-time {
-  display: block;
-  font-size: 11px;
-  color: #777;
-  margin-top: 6px;
-  text-align: right;
-}
-
-.message-input {
-  display: flex;
-  padding: 16px;
-  background: #f8f9fa;
-  border-top: 1px solid #ddd;
-  gap: 10px;
-}
-
-.message-input input {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.message-input button {
-  padding: 10px 18px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-}
-</style><script>
-function enviarMensagem() {
-  const input = document.getElementById("msg-input");
-  const mensagem = input.value.trim();
-  if (!mensagem) return;
-
-  const historico = document.getElementById("chat-history");
-  const novaMsg = document.createElement("div");
-  novaMsg.className = "msg msg-sent";
-  novaMsg.innerHTML = `
-    <p>${mensagem}</p>
-    <span class="msg-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}</span>
-  `;
-
-  historico.appendChild(novaMsg);
-  input.value = "";
-  historico.scrollTop = historico.scrollHeight;
-}
-</script>

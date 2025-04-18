@@ -293,10 +293,11 @@ async function criarLead() {
     const result = await response.json();
     alert(result.mensagem || "Lead criado!");
     fecharModal();
+    adicionarLeadNaColuna(lead);
   } catch (error) {
     console.error("Erro ao enviar lead:", error);
     alert("Erro ao enviar o lead.");
-adicionarLeadNaColuna(lead);
+
   }
 }
 </script>

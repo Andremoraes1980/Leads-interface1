@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -107,30 +106,45 @@
     }
     .modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
       padding: 2rem;
-      border-radius: 10px;
       width: 90%;
       max-width: 400px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
     }
-    .modal-content h3 {
+    .modal input, .modal select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .modal h3 {
       margin-top: 0;
     }
-    .modal-content button {
-      margin-top: 1rem;
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      z-index: 999;
+    }
+    .modal button {
       background: #1a73e8;
       color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -138,13 +152,11 @@
   <header>CRM de Leads</header>
   <div class="top-bar">
     <div class="top-left">
-      <button onclick="abrirModal('modalFiltro')">Filtro</button>
+      <button onclick="abrirModal('filtroModal')">Filtro</button>
     </div>
     <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
-    <button onclick="abrirModal('modalLead')">Criar Novo Lead</button>
-  </div>
-
-  <div class="container">
+    <button onclick="abrirModal('leadModal')">Criar Novo Lead</button>
+  </div>  <div class="container">
     <div class="column">
       <h2>Nova Proposta (3)</h2>
       <div class="lead">
@@ -165,33 +177,48 @@
     <div class="column"><h2>Visita Agendada (1)</h2></div>
     <div class="column"><h2>Negociação (4)</h2></div>
     <div class="column"><h2>Sem Contato (5)</h2></div>
-  </div>
-
-  <!-- Modal Lead -->
-  <div id="modalLead" class="modal">
-    <div class="modal-content">
-      <h3>Criar Novo Lead</h3>
-      <p>Formulário de criação de lead será adicionado aqui.</p>
-      <button onclick="fecharModal('modalLead')">Fechar</button>
-    </div>
-  </div>
-
-  <!-- Modal Filtro -->
-  <div id="modalFiltro" class="modal">
-    <div class="modal-content">
-      <h3>Filtro de Leads</h3>
-      <p>Opções de filtro serão adicionadas aqui.</p>
-      <button onclick="fecharModal('modalFiltro')">Fechar</button>
-    </div>
-  </div>
-
-  <script>
+  </div>  <!-- Modal Criar Lead -->  <div class="overlay" id="overlay"></div>
+  <div class="modal" id="leadModal">
+    <h3>Criar Novo Lead</h3>
+    <input type="text" placeholder="Nome">
+    <input type="text" placeholder="Telefone">
+    <input type="text" placeholder="Veículo">
+    <select>
+      <option value="">Temperatura</option>
+      <option value="quente">Quente</option>
+      <option value="morno">Morno</option>
+      <option value="frio">Frio</option>
+    </select>
+    <select>
+      <option value="">Origem</option>
+      <option>Webmotors</option>
+      <option>Mercado Livre</option>
+      <option>OLX</option>
+      <option>iCarros</option>
+      <option>Facebook</option>
+      <option>Instagram</option>
+    </select>
+    <button onclick="fecharModal()">Fechar</button>
+  </div>  <!-- Modal Filtro -->  <div class="modal" id="filtroModal">
+    <h3>Filtro de Leads</h3>
+    <input type="date" placeholder="Data de Chegada">
+    <select>
+      <option value="">Temperatura</option>
+      <option value="quente">Quente</option>
+      <option value="morno">Morno</option>
+      <option value="frio">Frio</option>
+    </select>
+    <input type="text" placeholder="Responsável">
+    <button onclick="fecharModal()">Fechar</button>
+  </div>  <script>
     function abrirModal(id) {
-      document.getElementById(id).style.display = 'flex';
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById(id).style.display = 'block';
     }
-    function fecharModal(id) {
-      document.getElementById(id).style.display = 'none';
+    function fecharModal() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('leadModal').style.display = 'none';
+      document.getElementById('filtroModal').style.display = 'none';
     }
-  </script>
-</body>
+  </script></body>
 </html>

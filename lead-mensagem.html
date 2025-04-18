@@ -12,32 +12,47 @@
     }
 
     header {
+      background-color: white;
+      color: black;
+      padding: 1.5rem 1rem 1.5rem;
+      margin: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      position: relative;
+    }
+
+    .faixa-topo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
       background-color: #1a73e8;
-      color: white;
-      padding: 0.75rem 1rem;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .header-content {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-radius: 0 0 10px 10px;
-      margin: 1rem;
-      font-size: 0.95rem;
+      margin-top: 1rem;
     }
 
-    .header-left,
-    .header-right {
+    .header-left, .header-right {
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.5rem;
     }
 
-    .header-right {
-      text-align: right;
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    .status-select {
+    .status-select, .temperatura-select {
       padding: 0.3rem;
       border-radius: 5px;
-      border: none;
+      border: 1px solid #ccc;
     }
 
     .mensagens {
@@ -46,22 +61,23 @@
       padding: 1rem;
       background-color: #f1f1f1;
       border-radius: 10px;
-      height: calc(100vh - 230px);
+      height: calc(100vh - 270px);
       overflow-y: auto;
       display: flex;
       flex-direction: column;
     }
 
     .data-mensagem {
-      text-align: center;
-      font-size: 0.8rem;
+      text-align: left;
+      font-size: 0.85rem;
       margin: 1rem 0 0.5rem;
       color: #555;
+      font-style: italic;
     }
 
     .mensagem {
-      max-width: 90%;
-      padding: 1rem 1.2rem;
+      max-width: 85%;
+      padding: 1rem 1rem 0.5rem;
       border-radius: 16px;
       margin-bottom: 1.2rem;
       position: relative;
@@ -69,6 +85,9 @@
       font-size: 0.95rem;
       line-height: 1.4;
       word-wrap: break-word;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
     }
 
     .cliente {
@@ -81,12 +100,26 @@
       background-color: #dcf0ff;
       align-self: flex-end;
       text-align: left;
+      flex-direction: row-reverse;
+    }
+
+    .circulo {
+      width: 32px;
+      height: 32px;
+      background-color: #1a73e8;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9rem;
     }
 
     .nome-remetente {
       font-weight: bold;
-      margin-bottom: 0.4rem;
       font-size: 0.85rem;
+      margin-bottom: 0.3rem;
     }
 
     .hora {
@@ -131,44 +164,54 @@
 <body>
 
   <header>
-    <div class="header-left">
-      <div><strong>João da Silva</strong></div>
-      <div>(11) 91234-5678</div>
-      <div>
-        <select class="status-select">
-          <option>Nova Proposta</option>
-          <option>Negociação</option>
-          <option>Sem Contato</option>
-        </select>
+    <div class="faixa-topo"></div>
+    <div class="header-content">
+      <div class="header-left">
+        <div><strong>João da Silva</strong></div>
+        <div>(11) 91234-5678</div>
+        <div>Vendedor: Carlos Mota</div>
+        <div class="row">
+          <select class="status-select">
+            <option>Nova Proposta</option>
+            <option>Negociação</option>
+            <option>Sem Contato</option>
+          </select>
+          <select class="temperatura-select">
+            <option>Quente</option>
+            <option>Morno</option>
+            <option>Frio</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="header-right">
-      <div><strong>Fiat Argo 2021</strong></div>
-      <div>R$ 58.000</div>
+      <div class="header-right">
+        <div><strong>Fiat Argo 2021</strong></div>
+        <div>R$ 58.000</div>
+      </div>
     </div>
   </header>
 
   <div class="mensagens">
-    <div class="data-mensagem">18 de Abril</div>
+    <div class="data-mensagem">Quinta-feira, 18 de Abril de 2025</div>
 
     <div class="mensagem cliente">
-      <div class="nome-remetente">João da Silva</div>
-      Estou interessado no carro, ainda está disponível?
-      <div class="hora">09:30</div>
+      <div class="circulo">JS</div>
+      <div>
+        <div class="nome-remetente">João da Silva</div>
+        Estou interessado no carro, ainda está disponível?
+        <div class="hora">09:30</div>
+      </div>
     </div>
 
     <div class="mensagem vendedor">
-      <div class="nome-remetente">Vendedor</div>
-      Olá João! Sim, o carro ainda está disponível. Deseja agendar uma visita?
-      <div class="hora">09:32</div>
+      <div class="circulo">CM</div>
+      <div>
+        <div class="nome-remetente">Carlos Mota</div>
+        Olá João! Sim, o carro ainda está disponível. Deseja agendar uma visita?
+        <div class="hora">09:32</div>
+      </div>
     </div>
 
   </div>
 
   <div class="barra-mensagem">
-    <input type="text" placeholder="Digite sua mensagem..." />
-    <button>Enviar</button>
-  </div>
-
-</body>
-</html>
+    <input type="text"

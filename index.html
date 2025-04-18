@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CRM de Leads</title>
   <style>
     body {
@@ -18,25 +18,31 @@
       padding: 1rem;
       text-align: center;
       font-size: 1.5rem;
+      border-radius: 0 0 10px 10px;
+      margin: 0 1rem;
     }
 
     .top-bar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       padding: 1rem;
+      margin: 1rem;
       background-color: white;
       border-radius: 10px;
-      margin: 1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
     }
 
-    .top-bar .left-buttons {
+    .left-controls {
       display: flex;
+      align-items: center;
       gap: 1rem;
+    }
+
+    .search-wrapper {
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
     }
 
     .top-bar input {
@@ -57,22 +63,22 @@
 
     .container {
       display: flex;
-      overflow-x: auto;
       padding: 0 1rem 1rem;
       gap: 1rem;
+      align-items: flex-start;
     }
 
     .column {
-      background: #f1f1f1;
+      background: #eaeaea;
       border-radius: 10px;
-      padding: 0.5rem;
+      padding: 1rem;
       min-width: 280px;
-      flex-shrink: 0;
+      flex: 1;
     }
 
     .column h2 {
-      font-size: 0.9rem;
-      margin: 0.5rem 0 0.5rem;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
       text-align: left;
     }
 
@@ -121,45 +127,31 @@
       height: 20px;
     }
 
-    /* Modal */
-    .modal, .modal-filtro {
+    .modal, .filtro-aba {
       display: none;
       position: fixed;
-      z-index: 20;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
     }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
+    .modal-content, .filtro-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 400px;
     }
 
-    .modal-content input, .modal-content select {
+    .modal-content input,
+    .filtro-content select {
       width: 100%;
-      margin: 0.5rem 0;
+      margin-bottom: 1rem;
       padding: 0.5rem;
       border-radius: 5px;
       border: 1px solid #ccc;
-    }
-
-    .modal-content button {
-      width: 100%;
-      padding: 0.5rem;
-      background-color: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      margin-top: 1rem;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -167,10 +159,12 @@
   <header>CRM de Leads</header>
 
   <div class="top-bar">
-    <div class="left-buttons">
-      <button onclick="abrirModalFiltro()">Filtro</button>
+    <div class="left-controls">
+      <button onclick="abrirFiltro()">Filtro</button>
     </div>
-    <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
+    <div class="search-wrapper">
+      <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
+    </div>
     <button onclick="abrirModal()">Criar Novo Lead</button>
   </div>
 
@@ -183,112 +177,4 @@
           <span>5min</span>
         </div>
         <div class="info">Fiat Argo 2021</div>
-        <div class="info">Link Vendedor</div>
-        <div class="lead-footer">
-          <span>2h sem resposta</span>
-          <span class="temperatura quente">Quente</span>
-          <img src="webmotors.png" class="icone-origem" alt="Origem">
-        </div>
-      </div>
-    </div>
-    <div class="column"><h2>Não Respondidos (2)</h2></div>
-    <div class="column"><h2>Visita Agendada (1)</h2></div>
-    <div class="column"><h2>Negociação (4)</h2></div>
-    <div class="column"><h2>Sem Contato (5)</h2></div>
-  </div>
-
-  <!-- Modal de Criação de Lead -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <h3>Criar Novo Lead</h3>
-      <label>Nome do Cliente</label>
-      <input type="text" />
-
-      <label>Telefone</label>
-      <input type="tel" placeholder="(XX) XXXXX-XXXX" />
-
-      <label>Carro</label>
-      <input type="text" />
-
-      <label>Origem</label>
-      <select>
-        <option>WebMotors</option>
-        <option>Mercado Livre</option>
-        <option>Manual</option>
-      </select>
-
-      <label>Temperatura</label>
-      <select>
-        <option>Quente</option>
-        <option>Morno</option>
-        <option>Frio</option>
-      </select>
-
-      <button onclick="fecharModal()">Salvar Lead</button>
-    </div>
-  </div>
-
-  <!-- Modal de Filtro -->
-  <div id="modal-filtro" class="modal-filtro modal">
-    <div class="modal-content">
-      <h3>Filtrar Leads</h3>
-
-      <label>Data de chegada</label>
-      <input type="date" />
-
-      <label>Responsável</label>
-      <input type="text" />
-
-      <label>Status</label>
-      <select>
-        <option>Nova Proposta</option>
-        <option>Não Respondidos</option>
-        <option>Visita Agendada</option>
-        <option>Negociação</option>
-        <option>Sem Contato</option>
-      </select>
-
-      <label>Origem</label>
-      <select>
-        <option>Todos</option>
-        <option>WebMotors</option>
-        <option>Mercado Livre</option>
-        <option>Manual</option>
-      </select>
-
-      <label>Temperatura</label>
-      <select>
-        <option>Todos</option>
-        <option>Quente</option>
-        <option>Morno</option>
-        <option>Frio</option>
-      </select>
-
-      <button onclick="fecharModalFiltro()">Filtrar</button>
-    </div>
-  </div>
-
-  <script>
-    function abrirModal() {
-      document.getElementById('modal').style.display = 'block';
-    }
-    function fecharModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
-
-    function abrirModalFiltro() {
-      document.getElementById('modal-filtro').style.display = 'block';
-    }
-    function fecharModalFiltro() {
-      document.getElementById('modal-filtro').style.display = 'none';
-    }
-
-    // Fecha modal ao clicar fora
-    window.onclick = function(event) {
-      if (event.target.classList.contains('modal')) {
-        event.target.style.display = 'none';
-      }
-    };
-  </script>
-</body>
-</html>
+        <

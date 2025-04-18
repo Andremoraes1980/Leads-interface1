@@ -1,23 +1,95 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
   margin: 0;
+  background-color: #f3f3f3;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
   padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 0 0 10px 10px;
 }
-#app {
-  max-width: 1200px;
-  margin: auto;
+
+.cliente-info, .veiculo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
-.coluna {
-  background: #fff;
-  padding: 16px;
+
+.chat-container {
+  padding: 20px;
+  background-color: #e6e6e6;
+  min-height: 400px;
+}
+
+.chat-date {
+  margin: 20px 0 10px;
+  font-weight: bold;
+}
+
+.mensagem {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  position: relative;
+  max-width: 70%;
+}
+
+.cliente {
+  align-self: flex-start;
+}
+
+.vendedor {
+  align-self: flex-end;
+  background-color: #d0f0d0;
+}
+
+.msg-topo {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.msg-texto {
+  margin-bottom: 5px;
+}
+
+.msg-hora {
+  font-size: 12px;
+  text-align: right;
+  color: #555;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  border-radius: 10px 10px 0 0;
+}
+
+.footer input {
+  flex: 1;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-.card {
   border: 1px solid #ccc;
-  padding: 8px;
-  margin-top: 10px;
-  border-radius: 4px;
-  background: #f9f9f9;
+  margin-right: 10px;
+}
+
+.footer button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4287f5;
+  color: white;
+  cursor: pointer;
+}
+
+.footer button:disabled, .footer input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

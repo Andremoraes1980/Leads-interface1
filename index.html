@@ -2,35 +2,42 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CRM de Leads</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    #modal {
+    #modalNovoLead {
       display: none;
-      background: white;
-      padding: 20px;
       position: fixed;
+      background: white;
+      padding: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
       top: 20%;
-      left: 30%;
-      width: 40%;
-      border: 1px solid #ccc;
-      box-shadow: 0 0 10px #999;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
 
-  <h1>CRM de Leads</h1>
-  <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
+  <input type="text" placeholder="Buscar por nome, carro ou temp." />
   <button onclick="abrirModal()">Criar Novo Lead</button>
 
-  <div id="cards">
+  <div id="leads-container">
     <h2>Nova Proposta (3)</h2>
-    <p>João Silva 5min<br>Fiat Argo 2021<br>Link Vendedor<br>2h sem resposta Quente <img src="origem.png" alt="Origem"></p>
+    <p>João Silva 5min</p>
+    <p>Fiat Argo 2021</p>
+    <a href="#">Link Vendedor</a>
+    <p>2h sem resposta Quente <img src="origem.png" alt="Origem" /></p>
+
+    <h2>Não Respondidos (2)</h2>
+    <h2>Visita Agendada (1)</h2>
+    <h2>Negociação (4)</h2>
+    <h2>Sem Contato (5)</h2>
   </div>
 
   <!-- Modal -->
-  <div id="modal">
+  <div id="modalNovoLead">
     <h3>Criar Novo Lead</h3>
     <input type="text" id="nome" placeholder="Nome" />
     <input type="text" id="telefone" placeholder="Telefone" />
@@ -43,65 +50,53 @@
     <select id="origem">
       <option value="Instagram">Instagram</option>
       <option value="Facebook">Facebook</option>
-      <option value="Indicação">Indicação</option>
+      <option value="Google">Google</option>
     </select>
-    <br><br>
     <button onclick="salvarLead()">Salvar Lead</button>
     <button onclick="fecharModal()">Fechar</button>
   </div>
 
-  <h3>Filtro de Leads</h3>
-  <input type="date" />
-  <select>
-    <option>Temperatura</option>
-  </select>
-  <select>
-    <option>Responsável</option>
-  </select>
-  <button>Fechar</button>
-
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const SUPABASE_URL = 'https://hzbzqsoldthxlmqyybfz.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6Ynpxc29sZHRoeGxtcXl5YmZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc2NTc4ODMsImV4cCI6MjAxMzIzMzg4M30.v3e4k0vW-csUkWbWiSnzLnd69VCWyJKW86NvKM_q8RY';
-
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Supabase setup
+    const SUPABASE_URL = 'https://dpanpvimjgybiyjnuyzi.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwYW5wdmltamd5Yml5am51eXppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2ODYxMzUsImV4cCI6MjA2MDI2MjEzNX0.r0YdAO3ZNiM1uzHIatTnAHwvaDbGV1EhIt8Vffo4-38';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     function abrirModal() {
-      document.getElementById("modal").style.display = "block";
+      document.getElementById('modalNovoLead').style.display = 'block';
     }
 
     function fecharModal() {
-      document.getElementById("modal").style.display = "none";
+      document.getElementById('modalNovoLead').style.display = 'none';
     }
 
     async function salvarLead() {
-      const nome = document.getElementById("nome").value;
-      const telefone = document.getElementById("telefone").value;
-      const veiculo = document.getElementById("veiculo").value;
-      const temperatura = document.getElementById("temperatura").value;
-      const origem = document.getElementById("origem").value;
+      const nome = document.getElementById('nome').value;
+      const telefone = document.getElementById('telefone').value;
+      const veiculo = document.getElementById('veiculo').value;
+      const temperatura = document.getElementById('temperatura').value;
+      const origem = document.getElementById('origem').value;
 
-      const { data, error } = await supabase.from("leads").insert([
-        {
-          nome,
-          telefone,
-          carro: veiculo,
-          temperatura,
-          origem,
-          responsavel: "vendedor123"
-        }
-      ]);
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            nome,
+            telefone,
+            veiculo,
+            temperatura,
+            origem
+          }
+        ]);
 
       if (error) {
-        alert("Erro ao salvar lead: " + error.message);
+        alert('Erro ao salvar lead: ' + error.message);
       } else {
-        alert("Lead salvo com sucesso!");
+        alert('Lead salvo com sucesso!');
         fecharModal();
+        location.reload();
       }
     }
   </script>
-
 </body>
 </html>

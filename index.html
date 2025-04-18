@@ -233,17 +233,31 @@
       document.getElementById('leadModal').style.display = 'none';
       document.getElementById('filtroModal').style.display = 'none';
     }
-function criarLead() {
+async function criarLead() {
   const nome = document.getElementById("nome").value;
   const telefone = document.getElementById("telefone").value;
   const veiculo = document.getElementById("veiculo").value;
   const temperatura = document.getElementById("temperatura").value;
   const origem = document.getElementById("origem").value;
 
-  console.log("Novo Lead:", { nome, telefone, veiculo, temperatura, origem });
+  const lead = { nome, telefone, veiculo, temperatura, origem };
 
-  alert("Lead criado com sucesso!");
-  fecharModal();
+  try {
+    const response = await fetch("https://leads-interface1.onrender.com/leads", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(lead)
+    });
+
+    const result = await response.json();
+    alert(result.mensagem || "Lead criado!");
+    fecharModal();
+  } catch (error) {
+    console.error("Erro ao enviar lead:", error);
+    alert("Erro ao enviar o lead.");
+  }
 }
 </script>
 </body>

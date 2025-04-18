@@ -2,44 +2,157 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Conversa com Cliente</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conversa do Lead</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+    }
+
+    header {
+      background-color: #1a73e8;
+      color: white;
+      padding: 0.7rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 4px solid #125abe;
+    }
+
+    .info-esquerda {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-direita {
+      text-align: right;
+    }
+
+    .chat-container {
+      padding: 1rem;
+      padding-bottom: 70px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+
+    .mensagem-dia {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #777;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .mensagem {
+      max-width: 70%;
+      padding: 0.7rem 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .mensagem .autor {
+      font-weight: bold;
+      font-size: 0.75rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .mensagem .hora {
+      font-size: 0.65rem;
+      position: absolute;
+      bottom: 5px;
+      right: 10px;
+      color: #666;
+    }
+
+    .mensagem.cliente {
+      background-color: #ffffff;
+      align-self: flex-start;
+    }
+
+    .mensagem.vendedor {
+      background-color: #dbeafe;
+      align-self: flex-end;
+    }
+
+    .chat-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .barra-mensagem {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: white;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .barra-mensagem input {
+      flex-grow: 1;
+      padding: 0.7rem;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+    }
+
+    .barra-mensagem button {
+      padding: 0.6rem 1rem;
+      background-color: #1a73e8;
+      border: none;
+      color: white;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <div class="header">
-    <div class="cliente-info">
-      <p><strong>Nome:</strong> Pedro Henrique</p>
-      <p><strong>Telefone:</strong> (11) 99999-9999</p>
-      <p><strong>Vendedor:</strong> André Moraes</p>
-      <p><strong>Status:</strong> <select><option>Nova Proposta</option><option>Negociando</option></select></p>
+
+  <header>
+    <div class="info-esquerda">
+      <strong>João Silva</strong>
+      <small>Telefone: (11) 99999-9999 | Vendedor: Marcos</small>
     </div>
-    <div class="veiculo-info">
-      <p>HYUNDAI CRETA</p>
-      <p>R$ 84.980</p>
+    <div class="info-direita">
+      <strong>Fiat Argo 2021</strong><br />
+      <select>
+        <option value="novo">Nova Proposta</option>
+        <option value="negociacao">Negociação</option>
+        <option value="vendido">Vendido</option>
+      </select>
     </div>
-  </div>
+  </header>
 
   <div class="chat-container">
-    <p class="chat-date">Quinta-feira, 17 Abril 2025</p>
+    <div class="chat-wrapper">
+      <div class="mensagem-dia">Hoje</div>
 
-    <div class="mensagem cliente">
-      <div class="msg-topo">Pedro Henrique</div>
-      <div class="msg-texto">Olá, fiz uma simulação de financiamento e estou interessado.</div>
-      <div class="msg-hora">23:25</div>
-    </div>
+      <div class="mensagem cliente">
+        <div class="autor">João Silva</div>
+        Estou interessado no carro ainda disponível?
+        <div class="hora">09:30</div>
+      </div>
 
-    <div class="mensagem vendedor">
-      <div class="msg-topo">André de Moraes</div>
-      <div class="msg-texto">Bom dia, posso te ajudar com mais informações?</div>
-      <div class="msg-hora">10:26</div>
+      <div class="mensagem vendedor">
+        <div class="autor">Marcos</div>
+        Sim, João! Está disponível sim.
+        <div class="hora">09:35</div>
+      </div>
+
+      <!-- Adicione mais mensagens aqui -->
     </div>
   </div>
 
-  <div class="footer">
-    <input type="text" placeholder="Escreva sua mensagem..." disabled />
-    <button disabled>Nota</button>
-    <button disabled>Agenda</button>
+  <div class="barra-mensagem">
+    <input type="text" placeholder="Digite sua mensagem..." />
+    <button>Enviar</button>
   </div>
+
 </body>
 </html>

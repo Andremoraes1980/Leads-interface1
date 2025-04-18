@@ -238,11 +238,17 @@ function adicionarLeadNaColuna(lead) {
   card.className = "lead";
   card.setAttribute("data-status", "nova-proposta");
 
-  // Criação de um ID único para persistência no localStorage
+  // Gera um ID único baseado no nome e veículo
   const leadId = `${lead.nome}-${lead.veiculo}`.replace(/\s+/g, '-').toLowerCase();
-  const storageKey = `leadTime_${leadId}`;
+  card.setAttribute("id", leadId);
 
-  // Se já houver um tempo salvo, usa ele. Se não, salva o atual.
+  // Permite arrastar
+  card.setAttribute("draggable", true);
+  card.addEventListener("dragstart", drag);
+  card.addEventListener("dragend", () => card.classList.remove("dragging"));
+
+  // Criação da data de criação persistida no localStorage
+  const storageKey = `leadTime_${leadId}`;
   let dataCriacao = localStorage.getItem(storageKey);
   if (!dataCriacao) {
     dataCriacao = new Date().toISOString();
@@ -273,7 +279,8 @@ function adicionarLeadNaColuna(lead) {
   const coluna = document.querySelector(".column:nth-child(1)");
   coluna.appendChild(card);
 
-  atualizarTempo(tempoSpanId, dataCriacao); // Usa a data persistida
+  atualizarTempo(tempoSpanId, dataCriacao);
+}
 }
 function atualizarTempo(elementId, dataCriacao) {
   const span = document.getElementById(elementId);

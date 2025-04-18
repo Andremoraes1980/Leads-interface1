@@ -309,7 +309,7 @@ async function criarLead() {
 }
 async function carregarLeads() {
   try {
-    const response = await fetch("https://loja-jg99.onrender.com/leads");
+    const response = await fetch("https://loja-lead2.onrender.com/leads");
     const leads = await response.json();
     leads.forEach(lead => {
       adicionarLeadNaColuna(lead);

@@ -233,6 +233,45 @@
       document.getElementById('leadModal').style.display = 'none';
       document.getElementById('filtroModal').style.display = 'none';
     }
+function adicionarLeadNaColuna(lead, tempo = "Agora") {
+  const card = document.createElement("div");
+  card.className = "lead";
+  card.setAttribute("data-status", "nova-proposta"); // Pode usar isso pra rastrear
+
+  card.innerHTML = `
+    <div class="lead-header">
+      <span>${lead.nome}</span>
+      <span>${tempo}</span>
+    </div>
+    <div class="info">${lead.veiculo}</div>
+    <div class="info vendedor">Link Vendedor</div>
+    <div class="lead-footer">
+      <span>0h sem resposta</span>
+      <span class="temperatura ${lead.temperatura}">${lead.temperatura.charAt(0).toUpperCase() + lead.temperatura.slice(1)}</span>
+      <img src="${getIconeOrigem(lead.origem)}" class="icone-origem" alt="Origem">
+    </div>
+  `;
+
+  card.onclick = () => {
+    // aqui você chama a função que abre o HTML da conversa
+    window.location.href = "conversa.html"; // ou ajuste pro caminho certo
+  };
+
+  const colunaNovaProposta = document.querySelector(".column:nth-child(1)");
+  colunaNovaProposta.appendChild(card);
+}
+
+function getIconeOrigem(origem) {
+  const origens = {
+    "Webmotors": "webmotors.png",
+    "Mercado Livre": "mercadolivre.png",
+    "OLX": "olx.png",
+    "iCarros": "icarros.png",
+    "Facebook": "facebook.png",
+    "Instagram": "instagram.png"
+  };
+  return origens[origem] || "default.png";
+}
 async function criarLead() {
   const nome = document.getElementById("nome").value;
   const telefone = document.getElementById("telefone").value;
@@ -257,6 +296,7 @@ async function criarLead() {
   } catch (error) {
     console.error("Erro ao enviar lead:", error);
     alert("Erro ao enviar o lead.");
+adicionarLeadNaColuna(lead);
   }
 }
 </script>

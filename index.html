@@ -1,113 +1,105 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CRM de Leads</title>
+  <meta charset="UTF-8">
+  <title>Gerenciador de Leads</title>
   <style>
-    /* Estilos permanecem os mesmos */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: space-around;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .column {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 30%;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      min-height: 300px;
+    }
+    .lead {
+      border: 1px solid #ddd;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #fafafa;
+      cursor: move;
+    }
+    .lead strong {
+      display: block;
+      margin-top: 5px;
+    }
+    .lead img {
+      width: 20px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
   </style>
 </head>
-<body>
-  <header>CRM de Leads</header>
-  <div class="top-bar">
-    <div class="top-left">
-      <button onclick="abrirModal('filtroModal')">Filtro</button>
-    </div>
-    <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
-    <button onclick="abrirModal('leadModal')">Criar Novo Lead</button>
+<body onload="carregarLeads()">
+
+  <div class="column" id="coluna-nova-proposta" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <h2>Nova Proposta</h2>
   </div>
-  <div class="container">
-    <div class="column" data-status="nova_proposta" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h2>Nova Proposta</h2>
-    </div>
-    <div class="column" data-status="nao_respondido" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h2>Não Respondidos</h2>
-    </div>
-    <div class="column" data-status="visita_agendada" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h2>Visita Agendada</h2>
-    </div>
-    <div class="column" data-status="negociacao" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h2>Negociação</h2>
-    </div>
-    <div class="column" data-status="sem_contato" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <h2>Sem Contato</h2>
-    </div>
-  </div>  <!-- Modais -->  <div class="overlay" id="overlay"></div>
-  <div class="modal" id="leadModal">
-    <!-- Modal Criar Lead -->
+  <div class="column" id="coluna-em-atendimento" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <h2>Em Atendimento</h2>
   </div>
-  <div class="modal" id="filtroModal">
-    <!-- Modal Filtro -->
-  </div>  <script>
-    function abrirModal(id) {
-      document.getElementById('overlay').style.display = 'block';
-      document.getElementById(id).style.display = 'block';
-    }
-    function fecharModal() {
-      document.getElementById('overlay').style.display = 'none';
-      document.getElementById('leadModal').style.display = 'none';
-      document.getElementById('filtroModal').style.display = 'none';
-    }
+  <div class="column" id="coluna-venda-realizada" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <h2>Venda Realizada</h2>
+  </div>
 
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
-
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-      ev.target.classList.add("dragging");
-    }
-
-    function drop(ev) {
-      ev.preventDefault();
-      const data = ev.dataTransfer.getData("text");
-      const card = document.getElementById(data);
-      card.classList.remove("dragging");
-
-      const coluna = ev.target.closest(".column");
-      if (coluna) {
-        coluna.appendChild(card);
-        const newStatus = coluna.dataset.status;
-        const leadId = card.getAttribute("data-lead-id");
-        if (leadId) {
-          fetch(`https://loja-lead2.onrender.com/leads/${leadId}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: newStatus })
-          });
-        }
+  <script>
+    const leads = [
+      {
+        nome: "João Silva",
+        telefone: "(11) 99999-9999",
+        origem: "Webmotors",
+        status: "Nova Proposta"
+      },
+      {
+        nome: "Maria Souza",
+        telefone: "(21) 98888-8888",
+        origem: "OLX",
+        status: "Em Atendimento"
+      },
+      {
+        nome: "Carlos Lima",
+        telefone: "(31) 97777-7777",
+        origem: "Facebook",
+        status: "Venda Realizada"
       }
+    ];
+
+    function carregarLeads() {
+      leads.forEach(adicionarLeadNaColuna);
     }
 
     function adicionarLeadNaColuna(lead) {
-      const card = document.createElement("div");
-      const id = "lead-" + Math.random().toString(36).substr(2, 9);
-      card.id = id;
-      card.className = "lead";
-      card.setAttribute("draggable", "true");
-      card.setAttribute("ondragstart", "drag(event)");
-      card.setAttribute("data-lead-id", lead.id);
-
-      card.innerHTML = `
-        <div class="lead-header">
-          <span>${lead.nome}</span>
-          <span>Agora</span>
-        </div>
-        <div class="info">${lead.veiculo}</div>
-        <div class="info vendedor">Link Vendedor</div>
-        <div class="lead-footer">
-          <span>0h sem resposta</span>
-          <span class="temperatura ${lead.temperatura}">${lead.temperatura}</span>
-          <img src="${getIconeOrigem(lead.origem)}" class="icone-origem" alt="Origem">
-        </div>
+      const leadElement = document.createElement("div");
+      leadElement.className = "lead";
+      leadElement.draggable = true;
+      leadElement.ondragstart = drag;
+      leadElement.innerHTML = `
+        <strong>${lead.nome}</strong>
+        <span>${lead.telefone}</span><br>
+        <img src="${getIconeOrigem(lead.origem)}" alt="${lead.origem}"> ${lead.origem}
       `;
 
-      card.onclick = () => {
-        window.location.href = "conversa.html";
-      };
+      let coluna;
+      if (lead.status === "Nova Proposta") {
+        coluna = document.getElementById("coluna-nova-proposta");
+      } else if (lead.status === "Em Atendimento") {
+        coluna = document.getElementById("coluna-em-atendimento");
+      } else if (lead.status === "Venda Realizada") {
+        coluna = document.getElementById("coluna-venda-realizada");
+      }
 
-      const coluna = document.querySelector(`.column[data-status='${lead.status || "nova_proposta"}']`);
-      coluna.appendChild(card);
+      if (coluna) {
+        coluna.appendChild(leadElement);
+      }
     }
 
     function getIconeOrigem(origem) {
@@ -119,49 +111,30 @@
         "Facebook": "facebook.png",
         "Instagram": "instagram.png"
       };
-      return origens[origem] || "default.png";
+      return `./img/${origens[origem] || "default.png"}`;
     }
 
-    async function criarLead() {
-      const nome = document.getElementById("nome").value;
-      const telefone = document.getElementById("telefone").value;
-      const veiculo = document.getElementById("veiculo").value;
-      const temperatura = document.getElementById("temperatura").value;
-      const origem = document.getElementById("origem").value;
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
 
-      const lead = { nome, telefone, veiculo, temperatura, origem, status: "nova_proposta" };
+    function drag(ev) {
+      ev.dataTransfer.setData("text/plain", ev.target.innerHTML);
+      ev.dataTransfer.setData("origem", ev.target.parentNode.id);
+      ev.target.id = "dragging"; // marcar o elemento
+    }
 
-      try {
-        const response = await fetch("https://loja-lead2.onrender.com/leads", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(lead)
-        });
+    function drop(ev) {
+      ev.preventDefault();
+      const data = ev.dataTransfer.getData("text/plain");
+      const origemId = ev.dataTransfer.getData("origem");
 
-        const result = await response.json();
-        alert(result.mensagem || "Lead criado!");
-        fecharModal();
-        if (result.data && result.data[0]) {
-          adicionarLeadNaColuna(result.data[0]);
-        }
-      } catch (error) {
-        console.error("Erro ao enviar lead:", error);
-        alert("Erro ao enviar o lead.");
+      const dragging = document.getElementById("dragging");
+      if (dragging) {
+        dragging.removeAttribute("id");
+        ev.target.appendChild(dragging);
       }
     }
-
-    async function carregarLeads() {
-      try {
-        const response = await fetch("https://loja-lead2.onrender.com/leads");
-        const leads = await response.json();
-        leads.forEach(adicionarLeadNaColuna);
-      } catch (error) {
-        console.error("Erro ao carregar leads:", error);
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", carregarLeads);
-  </script></body>
+  </script>
+</body>
 </html>

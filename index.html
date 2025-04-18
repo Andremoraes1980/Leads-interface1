@@ -1,139 +1,125 @@
-<!DOCTYPE html><html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CRM de Leads</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
+      font-family: Arial, sans-serif;
       background: #f0f2f5;
     }
+
     header {
-      background-color: #1a73e8;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem;
-      background-color: white;
+      background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
-    .top-bar input {
-      padding: 0.5rem;
-      width: 300px;
-      border-radius: 5px;
+
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-left button {
+      margin-right: 1rem;
+    }
+
+    .header-search {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    .header-search input {
+      width: 60%;
+      padding: 0.6rem;
       border: 1px solid #ccc;
+      border-radius: 5px;
     }
-    .top-bar button {
-      padding: 0.5rem 1rem;
-      background-color: #1a73e8;
+
+    .header-right button {
+      padding: 0.6rem 1rem;
+      background: #1a73e8;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
+
     .container {
       display: flex;
       overflow-x: auto;
-      height: 75vh;
+      height: calc(100vh - 80px);
       padding: 1rem;
-      gap: 1rem;
     }
+
     .column {
-      background: #eaeaea;
+      background: #e9ecef;
       border-radius: 10px;
       padding: 1rem;
+      margin-right: 1rem;
       min-width: 280px;
-      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
     }
+
     .column h2 {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      text-align: center;
+      font-size: 0.9rem;
+      margin: 0 0 1rem;
+      text-align: left;
     }
+
     .lead {
-      background: #ffffff;
+      background: #fff;
       border-radius: 8px;
-      padding: 1rem;
+      padding: 0.8rem;
       margin-bottom: 1rem;
       box-shadow: 0 0 3px rgba(0,0,0,0.1);
+      cursor: grab;
     }
-    .lead-header {
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-    }
+
     .lead .info {
-      margin: 0.3rem 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
     }
+
     .lead-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 8px;
       font-size: 0.75rem;
-      margin-top: 0.5rem;
     }
+
     .temperatura {
-      padding: 0.2rem 0.5rem;
-      border-radius: 20px;
       font-weight: bold;
       color: white;
+      border-radius: 12px;
+      padding: 2px 6px;
     }
+
     .quente { background-color: green; }
     .morno { background-color: orange; }
     .frio { background-color: blue; }
-    .icone-origem {
-      width: 20px;
-      height: 20px;
-    }
-  </style>
-</head>
-<body>
-  <header>CRM de Leads</header>
-  <div class="top-bar">
-    <input type="text" placeholder="Buscar por nome, carro ou temperatura" />
-    <button>Criar Novo Lead</button>
-  </div>
-  <div class="container">
-    <div class="column">
-      <h2>Nova Proposta (3)</h2>
-      <div class="lead">
-        <div class="lead-header">
-          <span>João Silva</span>
-          <span>5min</span>
-        </div>
-        <div class="info">Fiat Argo 2021</div>
-        <div class="info vendedor">Link Vendedor</div>
-        <div class="lead-footer">
-          <span>2h sem resposta</span>
-          <span class="temperatura quente">Quente</span>
-          <img src="webmotors.png" class="icone-origem" alt="Origem">
-        </div>
-      </div>
-    </div>
-    <!-- Repetir para outras colunas com título e leads -->
-    <div class="column">
-      <h2>Não Respondidos (2)</h2>
-    </div>
-    <div class="column">
-      <h2>Visita Agendada (1)</h2>
-    </div>
-    <div class="column">
-      <h2>Negociação (4)</h2>
-    </div>
-    <div class="column">
-      <h2>Sem Contato (5)</h2>
-    </div>
-  </div>
-</body>
-</html>
+
+    /* Filtro lateral (oculto inicialmente) */
+    #filtro-modal {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 300px;
+      height: 100%;
+      background: white;
+      box-shadow: 2px 0 5px rgba(0,0

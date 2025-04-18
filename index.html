@@ -233,15 +233,19 @@
       document.getElementById('leadModal').style.display = 'none';
       document.getElementById('filtroModal').style.display = 'none';
     }
-function adicionarLeadNaColuna(lead, tempo = "Agora") {
+function adicionarLeadNaColuna(lead) {
   const card = document.createElement("div");
   card.className = "lead";
-  card.setAttribute("data-status", "nova-proposta"); // Pode usar isso pra rastrear
+  card.setAttribute("data-status", "nova-proposta");
+  card.setAttribute("data-criacao", new Date().toISOString());
+
+  const nomeFormatado = formatarNome(lead.nome);
+  const tempoSpanId = "tempo-" + Math.random().toString(36).substr(2, 9);
 
   card.innerHTML = `
     <div class="lead-header">
-<span>${formatarNome(lead.nome)}</span>
-      <span>${tempo}</span>
+      <span>${nomeFormatado}</span>
+      <span id="${tempoSpanId}">Agora</span>
     </div>
     <div class="info">${lead.veiculo}</div>
     <div class="info vendedor">Link Vendedor</div>
@@ -253,12 +257,36 @@ function adicionarLeadNaColuna(lead, tempo = "Agora") {
   `;
 
   card.onclick = () => {
-    // aqui você chama a função que abre o HTML da conversa
-    window.location.href = "conversa.html"; // ou ajuste pro caminho certo
+    window.location.href = "conversa.html";
   };
 
-  const colunaNovaProposta = document.querySelector(".column:nth-child(1)");
-  colunaNovaProposta.appendChild(card);
+  const coluna = document.querySelector(".column:nth-child(1)");
+  coluna.appendChild(card);
+
+  // Atualiza o contador de tempo
+  atualizarTempo(tempoSpanId, new Date());
+}
+function atualizarTempo(elementId, dataCriacao) {
+  const span = document.getElementById(elementId);
+  if (!span) return;
+
+  function atualizar() {
+    const agora = new Date();
+    const diffMs = agora - new Date(dataCriacao);
+    const diffMin = Math.floor(diffMs / 60000);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    let texto = "";
+    if (diffDias > 0) texto += `${diffDias}d `;
+    if (diffHoras > 0) texto += `${diffHoras % 24}h `;
+    texto += `${diffMin % 60}min`;
+
+    span.textContent = texto.trim();
+  }
+
+  atualizar(); // atualiza de imediato
+  setInterval(atualizar, 60000); // atualiza a cada 1 minuto
 }
 
 function getIconeOrigem(origem) {

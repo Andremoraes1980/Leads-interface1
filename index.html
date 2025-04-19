@@ -252,34 +252,62 @@
     }
 
     function adicionarLeadNaColuna(lead) {
-      const card = document.createElement("div");
-      const id = "lead-" + Math.random().toString(36).substr(2, 9);
-      card.id = id;
-      card.className = "lead";
-      card.setAttribute("draggable", "true");
-      card.setAttribute("ondragstart", "drag(event)");
+    function adicionarLeadNaColuna(lead) {
+  const card = document.createElement("div");
+  const id = "lead-" + Math.random().toString(36).substr(2, 9);
+  card.id = id;
+  card.className = "lead";
+  card.setAttribute("draggable", "true");
+  card.ondragstart = drag;
 
-      card.innerHTML = `
-        <div class="lead-header">
-          <span>${lead.nome}</span>
-          <span>Agora</span>
-        </div>
-        <div class="info">${lead.veiculo}</div>
-        <div class="info vendedor">Link Vendedor</div>
-        <div class="lead-footer">
-          <span>0h sem resposta</span>
-          <span class="temperatura ${lead.temperatura}">${lead.temperatura}</span>
-          <img src="${getIconeOrigem(lead.origem)}" class="icone-origem" alt="Origem">
-        </div>
-      `;
+  const tempoSpanId = "tempo-" + id;
+  const dataCriacao = new Date(lead.created_at || new Date());
 
-      card.onclick = () => {
-        window.location.href = "conversa.html";
-      };
+  card.innerHTML = `
+    <div class="lead-header">
+      <span>${lead.nome}</span>
+      <span id="${tempoSpanId}">...</span>
+    </div>
+    <div class="info">${lead.veiculo}</div>
+    <div class="info vendedor">Link Vendedor</div>
+    <div class="lead-footer">
+      <span>0h sem resposta</span>
+      <span class="temperatura ${lead.temperatura}">${lead.temperatura}</span>
+      <img src="${getIconeOrigem(lead.origem)}" class="icone-origem" alt="Origem">
+    </div>
+  `;
 
-      const colunaNovaProposta = document.querySelector(".column:nth-child(1)");
-      colunaNovaProposta.appendChild(card);
-    }
+  card.onclick = () => {
+    window.location.href = "conversa.html";
+  };
+
+  const colunaNovaProposta = document.querySelector(".column:nth-child(1)");
+  colunaNovaProposta.appendChild(card);
+
+  atualizarTempo(tempoSpanId, dataCriacao);
+}
+      function atualizarTempo(elementId, dataCriacao) {
+  const span = document.getElementById(elementId);
+  if (!span) return;
+
+  function atualizar() {
+    const agora = new Date();
+    const diffMs = agora - dataCriacao;
+    const minutos = Math.floor(diffMs / 60000);
+    const horas = Math.floor(minutos / 60);
+    const dias = Math.floor(horas / 24);
+
+    let texto = "";
+    if (dias > 0) texto += `${dias}d `;
+    if (horas > 0) texto += `${horas % 24}h `;
+    texto += `${minutos % 60}min`;
+
+    span.textContent = texto;
+  }
+
+  atualizar();
+  setInterval(atualizar, 60000);
+}
 
     function getIconeOrigem(origem) {
       const origens = {
@@ -300,8 +328,14 @@
       const temperatura = document.getElementById("temperatura").value;
       const origem = document.getElementById("origem").value;
 
-      const lead = { nome, telefone, veiculo, temperatura, origem };
-
+      const lead = {
+  nome,
+  telefone,
+  veiculo,
+  temperatura,
+  origem,
+  created_at: new Date().toISOString() // <-- Aqui adiciona a data e hora
+};
       try {
         const response = await fetch("https://loja-lead2.onrender.com/leads", {
           method: "POST",
